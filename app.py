@@ -33,7 +33,7 @@ if 'scheduler_initialized' not in st.session_state:
 # Main title and refresh button
 col1, col2 = st.columns([4, 1])
 with col1:
-    st.title("🇮🇳 Indian Stock Market Dashboard")
+    st.title("SWING-LEOFY MARKET DOMINATION")
     st.caption("Real-time NSE data feeds with sector analysis and financial news")
 
 with col2:
@@ -103,8 +103,62 @@ div.stButton > button:active {
     100% { box-shadow: 0 0 0 0 rgba(102, 126, 234, 0); }
 }
 
+@keyframes slideInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.stApp {
+    background-color: #f0f2f6; /* Light gray background */
+}
+
+.stMarkdown h1 {
+    text-align: center;
+    color: #333;
+    animation: slideInUp 0.8s ease-out;
+}
+
+.stMarkdown h3 {
+    color: #555;
+}
+
+.stMarkdown p {
+    color: #666;
+}
+
+.stButton {
+    animation: slideInUp 0.5s ease-out;
+}
+
+.stAlert {
+    animation: fadeIn 0.5s ease-out;
+}
+
+.stSpinner {
+    animation: pulse 1.5s infinite;
+}
+
 .nav-container {
     padding: 10px 0;
+}
+
+/* Custom scrollbar for better aesthetics */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
 }
 </style>
 """, unsafe_allow_html=True)

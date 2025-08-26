@@ -61,12 +61,14 @@ def render_trending_news():
         transition: all 0.3s ease;
         font-size: 18px;
         line-height: 1.8;
+        cursor: pointer;
+        animation: slideInUp 0.6s ease-out forwards;
     }
     .news-item:hover {
         background: rgba(255, 255, 255, 0.1);
         border-left: 6px solid #764ba2;
-        transform: translateY(-3px);
-        box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        transform: translateY(-3px) scale(1.01);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.25);
     }
     .category-badge {
         display: inline-block;
@@ -81,6 +83,47 @@ def render_trending_news():
         0% { transform: scale(1); }
         50% { transform: scale(1.05); }
         100% { transform: scale(1); }
+    }
+    .stButton > button {
+        width: 100%;
+        height: 50px;
+        font-size: 16px;
+        font-weight: bold;
+        border-radius: 10px;
+        border: none;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        margin: 5px 0;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .stButton > button::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+        transition: left 0.5s;
+    }
+    
+    .stButton > button:hover {
+        background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+        transform: translateY(-3px) scale(1.02);
+        box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+    }
+    
+    .stButton > button:hover::before {
+        left: 100%;
+    }
+    
+    .stButton > button:active {
+        background: linear-gradient(135deg, #5a67d8 0%, #667eea 100%);
+        transform: translateY(-1px) scale(1.00);
     }
     </style>
     """, unsafe_allow_html=True)

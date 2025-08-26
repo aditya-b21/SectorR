@@ -4,7 +4,7 @@ import plotly.graph_objects as go
 import pandas as pd
 import numpy as np
 from datetime import datetime, timedelta
-from tradingview_charts import render_tradingview_widget, render_indices_overview
+# from tradingview_charts import render_tradingview_widget, render_indices_overview
 
 def render_market_cover():
     """Render the Market Cover page with enhanced UI"""
@@ -95,27 +95,15 @@ def render_market_cover():
                     )
                     st.markdown('</div>', unsafe_allow_html=True)
                     
-                    # Additional details in expander with TradingView chart
-                    with st.expander(f"📈 Live Chart & Details - {index_data['Index']}"):
+                    # Additional details in expander
+                    with st.expander(f"Details - {index_data['Index']}"):
                         st.write(f"**Open:** ₹{index_data['Open']:,.2f}")
                         st.write(f"**High:** ₹{index_data['High']:,.2f}")
                         st.write(f"**Low:** ₹{index_data['Low']:,.2f}")
                         st.write(f"**Volume:** {index_data['Volume']:,.0f}")
                         st.write(f"**Trend:** {trend_icon}")
-                        
-                        # Show TradingView chart
-                        if 'Symbol' in index_data:
-                            chart_symbol = index_data['Symbol'].replace('^', '')
-                            render_tradingview_widget(chart_symbol, height=350)
     
-    # TradingView Live Charts Section
-    st.subheader("📊 Live TradingView Charts - Real-Time Data")
-    
-    # Major Indices TradingView Charts
-    st.markdown("#### 🚀 Major Indices - Live Professional Charts")
-    render_indices_overview()
-    
-    # Individual Index Selection with Real TradingView Chart
+    # Individual Index Selection with Detailed Analysis
     st.markdown("#### 🎯 Detailed Index Analysis")
     selected_index = st.selectbox(
         "Select index for detailed live analysis:",
@@ -136,12 +124,6 @@ def render_market_cover():
             st.metric("% Change", f"{selected_row['Percent_Change']:+.2f}%")
         with col4:
             st.metric("Volume", f"{selected_row['Volume']:,.0f}")
-        
-        # Show live TradingView chart
-        st.markdown(f"### 📈 {selected_index} - Live Professional Chart")
-        if 'Symbol' in selected_row:
-            chart_symbol = selected_row['Symbol'].replace('^', '')
-            render_tradingview_widget(chart_symbol, height=600)
         
         # Additional analysis section
         with st.expander("📊 Technical Analysis Summary"):

@@ -1,0 +1,22 @@
+Metadata-Version: 2.4
+Name: repl-nix-workspace
+Version: 0.1.0
+Summary: Add your description here
+Requires-Python: >=3.11
+Requires-Dist: apscheduler>=3.11.0
+Requires-Dist: beautifulsoup4>=4.13.5
+Requires-Dist: lxml>=5.4.0
+Requires-Dist: numpy>=2.3.2
+Requires-Dist: pandas>=2.3.2
+Requires-Dist: plotly>=6.3.0
+Requires-Dist: pytz>=2025.2
+Requires-Dist: requests>=2.32.5
+Requires-Dist: selenium>=4.35.0
+Requires-Dist: streamlit-option-menu>=0.4.0
+Requires-Dist: streamlit>=1.48.1
+Requires-Dist: trafilatura>=2.0.0
+Requires-Dist: yfinance>=0.2.65
+Requires-Dist: streamlit-lottie>=0.0.5
+Requires-Dist: requests-html>=0.10.0
+Requires-Dist: nsepy>=0.8
+Requires-Dist: requests-cache>=1.2.1
