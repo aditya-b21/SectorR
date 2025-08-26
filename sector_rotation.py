@@ -341,39 +341,56 @@ def render_sector_rotation():
             st.plotly_chart(fig_top, use_container_width=True)
     st.markdown('</div>', unsafe_allow_html=True)
     
-    # Enhanced Industry Performance Overview Chart
+    # Professional Industry Performance Overview (SwingAlgo Style)
     st.markdown('<div class="sector-card">', unsafe_allow_html=True)
-    st.subheader("📊 Complete Industry Performance Overview")
+    st.subheader("📊 Industry Performance Overview")
     
     if not filtered_df.empty:
-        # Create enhanced interactive bar chart with animations
-        display_count = min(25, len(filtered_df))  # Show up to 25 sectors
+        # Sort by performance and take top performers like SwingAlgo
+        top_performers = filtered_df.sort_values('Percent_Change', ascending=False).head(20)
+        
+        # Create professional horizontal bar chart matching SwingAlgo
         fig_bar = px.bar(
-            filtered_df.head(display_count),
+            top_performers,
             x='Percent_Change',
             y='Industry',
             orientation='h',
             color='Percent_Change',
-            color_continuous_scale=['#FF4757', '#FFA502', '#2ED573', '#1E90FF', '#5F27CD'],
-            title=f"<b>📊 Sector Performance Dashboard ({display_count} Sectors)</b>",
-            labels={'Percent_Change': 'Percentage Change (%)', 'Industry': 'Sector'},
+            color_continuous_scale=['#e74c3c', '#f39c12', '#f1c40f', '#2ecc71', '#27ae60'],
+            title="<b>Industry Performance Overview</b>",
+            labels={'Percent_Change': 'Performance (%)', 'Industry': ''},
             text='Percent_Change'
         )
         
+        # Update layout to match SwingAlgo style
         fig_bar.update_traces(
             texttemplate='%{text:.2f}%', 
             textposition='outside',
-            hovertemplate='<b>%{y}</b><br>Change: %{x:.2f}%<extra></extra>'
+            hovertemplate='<b>%{y}</b><br>Performance: %{x:.2f}%<extra></extra>',
+            textfont=dict(size=11, color='white')
         )
+        
         fig_bar.update_layout(
-            height=700, 
+            height=600, 
             showlegend=False,
-            plot_bgcolor='rgba(0,0,0,0)',
+            plot_bgcolor='#2c3e50',  # Dark background like SwingAlgo
             paper_bgcolor='rgba(0,0,0,0)',
-            font=dict(size=12),
-            title_font_size=20,
-            xaxis=dict(gridcolor='rgba(255,255,255,0.2)'),
-            yaxis=dict(gridcolor='rgba(255,255,255,0.2)')
+            font=dict(size=11, color='white'),
+            title_font_size=18,
+            title_x=0.5,
+            xaxis=dict(
+                gridcolor='rgba(255,255,255,0.1)',
+                showgrid=True,
+                tickformat='.1f',
+                ticksuffix='%',
+                range=[0, max(top_performers['Percent_Change'].max() * 1.2, 4)]
+            ),
+            yaxis=dict(
+                gridcolor='rgba(255,255,255,0.1)',
+                showgrid=False,
+                tickfont=dict(size=10)
+            ),
+            margin=dict(l=250, r=100, t=50, b=50)  # More space for sector names
         )
         st.plotly_chart(fig_bar, use_container_width=True)
     st.markdown('</div>', unsafe_allow_html=True)
@@ -500,41 +517,70 @@ def render_sector_rotation():
     
     st.markdown('</div>', unsafe_allow_html=True)
     
-    # Enhanced Clickable Industry Data Table
+    # Professional Sector Explorer (SwingAlgo Style)
     st.markdown('<div class="sector-card">', unsafe_allow_html=True)
-    st.subheader("📋 Interactive Sector Explorer")
-    st.caption("Click on any sector to view its constituent stocks")
+    st.subheader("🔍 Complete Sector Coverage - 150+ Industries")
+    
+    # Search functionality like SwingAlgo
+    col1, col2 = st.columns([2, 1])
+    with col1:
+        search_query = st.text_input("🔍 Search industries...", placeholder="Type sector name to filter", key="sector_search")
+    with col2:
+        show_count = st.selectbox("Show", ["All", "Top 15", "Top 50"], key="show_count")
     
     if not filtered_df.empty:
-        # Format the dataframe for display
-        display_df = filtered_df.copy().reset_index(drop=True)
+        # Apply search filter
+        if search_query:
+            search_filtered = filtered_df[filtered_df['Industry'].str.contains(search_query, case=False, na=False)]
+        else:
+            search_filtered = filtered_df
+            
+        # Apply count filter
+        if show_count == "Top 15":
+            display_df = search_filtered.head(15)
+        elif show_count == "Top 50":
+            display_df = search_filtered.head(50)
+        else:
+            display_df = search_filtered
+            
+        # Format the dataframe for professional display
+        display_df = display_df.copy().reset_index(drop=True)
         display_df['Avg_Open'] = display_df['Avg_Open'].round(2)
         display_df['Avg_Close'] = display_df['Avg_Close'].round(2)
         display_df['Avg_High'] = display_df['Avg_High'].round(2)
         display_df['Avg_Low'] = display_df['Avg_Low'].round(2)
         display_df['Percent_Change'] = display_df['Percent_Change'].round(2)
         
-        # Create interactive table with sector selection
-        selected_sector = st.selectbox(
-            "🎯 Select a sector to view its stocks:",
-            options=display_df['Industry'].tolist(),
-            key="sector_selector"
+        # Add trend arrows like SwingAlgo
+        display_df['Trend_Arrow'] = display_df['Percent_Change'].apply(
+            lambda x: "🟢 Up" if x > 0 else "🔴 Down" if x < 0 else "➡️ Flat"
         )
         
-        # Display sector table
+        st.markdown(f"**Showing {len(display_df)} of {len(sector_df)} sectors**")
+        
+        # Professional table display matching SwingAlgo layout
         st.dataframe(
             display_df,
             column_config={
-                "Industry": "🏭 Sector Name",
-                "Avg_Open": st.column_config.NumberColumn("📊 Avg. Open", format="₹%.2f"),
-                "Avg_Close": st.column_config.NumberColumn("💰 Avg. Close", format="₹%.2f"),
-                "Avg_High": st.column_config.NumberColumn("⬆️ Avg. High", format="₹%.2f"),
-                "Avg_Low": st.column_config.NumberColumn("⬇️ Avg. Low", format="₹%.2f"),
-                "Percent_Change": st.column_config.NumberColumn("📈 % Change", format="%.2f%%"),
-                "Trend": "📊 Trend"
+                "Industry": st.column_config.TextColumn("🏭 Industry", width="large", help="Sector/Industry name"),
+                "Avg_Open": st.column_config.NumberColumn("💰 Avg. Open", format="%.2f", help="Average opening price"),
+                "Avg_Close": st.column_config.NumberColumn("💰 Avg. Close", format="%.2f", help="Average closing price"),
+                "Avg_High": st.column_config.NumberColumn("📈 Avg. High", format="%.2f", help="Average high price"),
+                "Avg_Low": st.column_config.NumberColumn("📉 Avg. Low", format="%.2f", help="Average low price"),
+                "Percent_Change": st.column_config.NumberColumn("📊 Change (%)", format="%.2f%%", help="Percentage change"),
+                "Trend_Arrow": st.column_config.TextColumn("📊 Trend", help="Price trend direction")
             },
             use_container_width=True,
-            hide_index=True
+            hide_index=True,
+            height=600
+        )
+        
+        # Sector selection for detailed view
+        st.markdown("---")
+        selected_sector = st.selectbox(
+            "🎯 Select a sector for detailed stock analysis:",
+            options=display_df['Industry'].tolist(),
+            key="sector_selector"
         )
         
         # Display stocks in selected sector
