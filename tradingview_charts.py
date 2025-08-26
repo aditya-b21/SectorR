@@ -14,12 +14,10 @@ def render_tradingview_widget(symbol, height=500, theme="dark"):
     
     tradingview_html = f"""
     <!-- TradingView Widget BEGIN -->
-    <div class="tradingview-widget-container" style="height:{height}px;width:100%">
+    <div class="tradingview-widget-container" style="height:{height}px;width:100%;border-radius:12px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,0.15);">
       <div class="tradingview-widget-container__widget" style="height:calc({height}px - 32px);width:100%"></div>
-      <div class="tradingview-widget-copyright">
-        <a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank">
-          <span class="blue-text">Track all markets on TradingView</span>
-        </a>
+      <div class="tradingview-widget-copyright" style="display:none;">
+        <span class="blue-text">Professional Chart View</span>
       </div>
       <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js" async>
       {{
@@ -34,14 +32,19 @@ def render_tradingview_widget(symbol, height=500, theme="dark"):
         "withdateranges": true,
         "range": "YTD",
         "hide_side_toolbar": false,
-        "allow_symbol_change": true,
+        "allow_symbol_change": false,
         "details": true,
-        "hotlist": true,
+        "hotlist": false,
         "calendar": false,
         "studies": [
-          "STD;SMA"
+          "STD;SMA",
+          "STD;MACD"
         ],
-        "container_id": "tradingview_{symbol.replace('.', '_').replace('^', '_')}"
+        "container_id": "tradingview_{symbol.replace('.', '_').replace('^', '_')}",
+        "hide_legend": false,
+        "save_image": false,
+        "hide_volume": false,
+        "support_host": "https://www.tradingview.com"
       }}
       </script>
     </div>
@@ -204,19 +207,49 @@ def render_stock_modal_button(stock_symbol, stock_name):
     ):
         st.session_state[modal_key] = True
     
-    # Modal logic
+    # Modal logic with bigger size
     if st.session_state.get(modal_key, False):
-        # Create expander for chart
-        with st.expander(f"📈 {stock_name} - Live Trading Chart", expanded=True):
-            col1, col2 = st.columns([5, 1])
+        # Add custom CSS for full-width modal
+        st.markdown("""
+        <style>
+        .chart-modal {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            margin: 20px 0;
+        }
+        .chart-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 20px 20px 0 0;
+            text-align: center;
+        }
+        </style>
+        """, unsafe_allow_html=True)
+        
+        # Create full-width expander for chart
+        with st.expander(f"📈 {stock_name} - Live Professional Chart", expanded=True):
+            # Header with close button
+            col1, col2 = st.columns([6, 1])
+            
+            with col1:
+                st.markdown(f"""
+                <div class="chart-header">
+                    <h2>📊 {stock_name} - Live Market Analysis</h2>
+                    <p>Professional TradingView Chart with Technical Indicators</p>
+                </div>
+                """, unsafe_allow_html=True)
             
             with col2:
-                if st.button("Close ✕", key=f"close_{button_key}"):
+                if st.button("✕ Close Chart", key=f"close_{button_key}", type="secondary"):
                     st.session_state[modal_key] = False
                     st.rerun()
             
-            with col1:
-                st.markdown(f"**{stock_name}** - Real-time Trading View")
+            # Render the bigger chart
+            st.markdown('<div class="chart-modal">', unsafe_allow_html=True)
+            render_tradingview_widget(stock_symbol, height=700)
+            st.markdown('</div>', unsafe_allow_html=True)
             
-            # Render the chart
-            render_tradingview_widget(stock_symbol, height=500)
+            # Additional info
+            st.info("💡 Use the chart tools above for technical analysis. This is a live professional chart with real-time data.")

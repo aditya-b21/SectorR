@@ -207,8 +207,8 @@ def render_market_cover():
         
         # Performance summary table
         st.subheader("📋 Performance Summary")
-        summary_df = comparison_df[['Index', 'Price', 'Change', 'Percent_Change', 'Volume']].copy()
-        summary_df['Price'] = summary_df['Price'].round(2)
+        summary_df = comparison_df[['Index', 'Last_Price', 'Change', 'Percent_Change', 'Volume']].copy()
+        summary_df['Last_Price'] = summary_df['Last_Price'].round(2)
         summary_df['Change'] = summary_df['Change'].round(2)
         summary_df['Percent_Change'] = summary_df['Percent_Change'].round(2)
         

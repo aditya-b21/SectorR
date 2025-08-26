@@ -10,6 +10,32 @@ from tradingview_charts import render_tradingview_widget, render_stock_modal_but
 
 def render_sector_rotation():
     """Render the Sector Rotation page with enhanced UI"""
+    # Make the page wider and add better spacing
+    st.markdown("""
+    <style>
+    .main > div {
+        max-width: 100% !important;
+        padding: 1rem 2rem !important;
+    }
+    .stSelectbox > div > div {
+        font-size: 16px !important;
+    }
+    .stDataFrame {
+        font-size: 16px !important;
+    }
+    .sector-card {
+        padding: 20px !important;
+        margin: 15px 0 !important;
+        font-size: 18px !important;
+    }
+    .stock-info {
+        font-size: 16px !important;
+        padding: 12px !important;
+        margin: 8px 0 !important;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+    
     # Advanced CSS for animations and styling
     st.markdown("""
     <style>
@@ -626,14 +652,16 @@ def render_sector_rotation():
                         st.markdown(f"""
                         <div style="
                             background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-                            padding: 15px;
-                            border-radius: 12px;
-                            margin: 8px 0;
-                            border-left: 4px solid {'#2ecc71' if stock['Percent_Change'] > 0 else '#e74c3c'};
+                            padding: 25px;
+                            border-radius: 15px;
+                            margin: 15px 0;
+                            border-left: 6px solid {'#2ecc71' if stock['Percent_Change'] > 0 else '#e74c3c'};
+                            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+                            transition: transform 0.3s ease;
                         ">
-                            <h4 style="margin: 0; color: #2c3e50;">{stock['Symbol']}</h4>
-                            <p style="margin: 5px 0; font-size: 18px; font-weight: bold; color: #34495e;">₹{stock['Current_Price']:.2f}</p>
-                            <p style="margin: 0; color: {'#2ecc71' if stock['Percent_Change'] > 0 else '#e74c3c'};">
+                            <h3 style="margin: 0; color: #2c3e50; font-size: 24px;">{stock['Symbol']}</h3>
+                            <p style="margin: 10px 0; font-size: 24px; font-weight: bold; color: #34495e;">₹{stock['Current_Price']:.2f}</p>
+                            <p style="margin: 0; font-size: 20px; font-weight: 600; color: {'#2ecc71' if stock['Percent_Change'] > 0 else '#e74c3c'};">
                                 {stock['Percent_Change']:+.2f}% ({stock['Change']:+.2f})
                             </p>
                         </div>

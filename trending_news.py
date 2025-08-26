@@ -7,9 +7,25 @@ import plotly.express as px
 def render_trending_news():
     """Render the Trending News page with enhanced UI and categorization"""
     
-    # Custom CSS for news styling
+    # Make the page wider and add better spacing
     st.markdown("""
     <style>
+    .main > div {
+        max-width: 100% !important;
+        padding: 1rem 2rem !important;
+    }
+    .stExpander {
+        font-size: 18px !important;
+    }
+    .article-content {
+        font-size: 16px !important;
+        line-height: 1.6 !important;
+        padding: 20px !important;
+        max-width: 100% !important;
+    }
+    .stText {
+        font-size: 16px !important;
+    }
     .news-header {
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         padding: 2rem;
@@ -38,15 +54,19 @@ def render_trending_news():
     }
     .news-item {
         background: rgba(255, 255, 255, 0.05);
-        border-radius: 10px;
-        padding: 1rem;
-        margin: 0.5rem 0;
-        border-left: 4px solid #667eea;
+        border-radius: 15px;
+        padding: 2rem;
+        margin: 1rem 0;
+        border-left: 6px solid #667eea;
         transition: all 0.3s ease;
+        font-size: 18px;
+        line-height: 1.8;
     }
     .news-item:hover {
         background: rgba(255, 255, 255, 0.1);
-        border-left: 4px solid #764ba2;
+        border-left: 6px solid #764ba2;
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.2);
     }
     .category-badge {
         display: inline-block;
@@ -348,38 +368,96 @@ def get_category_color(category):
     return colors.get(category, '#95a5a6')
 
 def show_full_news_modal(article):
-    """Display full news content in modal-like format"""
+    """Display full news content in modal-like format with enhanced readability"""
+    
+    # Enhanced modal styling for better readability
+    st.markdown("""
+    <style>
+    .news-modal {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        border-radius: 20px;
+        padding: 40px;
+        margin: 30px 0;
+        border-left: 8px solid #667eea;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        font-size: 18px;
+        line-height: 1.9;
+    }
+    .modal-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 30px;
+        border-radius: 15px;
+        margin-bottom: 30px;
+        text-align: center;
+    }
+    .content-section {
+        font-size: 18px;
+        line-height: 2.0;
+        color: #2c3e50;
+        text-align: justify;
+        margin: 25px 0;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+    
     st.markdown("---")
-    st.markdown(f"## 📰 {article['headline']}")
     
-    # Display full content
-    full_content = article.get('full_content', f"""
-    {article['headline']}
+    # Enhanced header
+    st.markdown(f"""
+    <div class="modal-header">
+        <h1 style="margin: 0; font-size: 32px;">📰 {article['headline']}</h1>
+        <p style="margin: 10px 0 0 0; font-size: 18px; opacity: 0.9;">Complete Article Analysis</p>
+    </div>
+    """, unsafe_allow_html=True)
     
-    📊 Market Analysis: This development represents a significant milestone in the current economic environment. Industry experts believe this will have far-reaching implications for investors and market participants.
+    # Display full content with better formatting
+    full_content = f"""
+    <div class="content-section">
+        <h3 style="color: #667eea; font-size: 24px; margin-bottom: 20px;">📊 Comprehensive Market Analysis</h3>
+        <p style="font-size: 20px; line-height: 1.8; margin-bottom: 25px;">
+            {article['headline']} - This development represents a significant milestone in the current economic environment. 
+            Industry experts believe this will have far-reaching implications for investors and market participants across multiple sectors.
+        </p>
+        
+        <h4 style="color: #2c3e50; font-size: 22px; margin: 30px 0 20px 0;">💡 Key Market Insights</h4>
+        <ul style="font-size: 18px; line-height: 1.8; color: #34495e;">
+            <li>Market volatility continues to be a key concern for institutional and retail investors</li>
+            <li>Regulatory changes are actively shaping the evolving financial landscape</li>
+            <li>Technology adoption is accelerating across traditional business sectors</li>
+            <li>Global economic indicators remain mixed with regional variations</li>
+            <li>Currency fluctuations are impacting international trade dynamics</li>
+        </ul>
+        
+        <h4 style="color: #2c3e50; font-size: 22px; margin: 30px 0 20px 0;">🔍 Expert Professional Opinion</h4>
+        <p style="font-size: 18px; line-height: 1.8; color: #34495e; background: #f8f9fa; padding: 25px; border-radius: 12px; border-left: 4px solid #667eea; margin: 20px 0;">
+            Leading financial analysts recommend maintaining a well-diversified investment portfolio while keeping a close watch 
+            on emerging market trends and regulatory developments. Risk management strategies should be adapted to current market conditions.
+        </p>
+        
+        <h4 style="color: #2c3e50; font-size: 22px; margin: 30px 0 20px 0;">📈 Market Impact Assessment</h4>
+        <p style="font-size: 18px; line-height: 1.8; color: #34495e;">
+            This news development is likely to influence trading patterns in the upcoming sessions, particularly affecting 
+            related sector stocks and derivative instruments. Market participants should monitor volume patterns and price action closely.
+        </p>
+        
+        <h4 style="color: #2c3e50; font-size: 22px; margin: 30px 0 20px 0;">💰 Investment Strategy Perspective</h4>
+        <p style="font-size: 18px; line-height: 1.8; color: #34495e;">
+            Long-term investors should consider the broader economic context and fundamental analysis while making strategic 
+            portfolio adjustments. Short-term traders may find opportunities in increased volatility patterns.
+        </p>
+    </div>
+    """
     
-    🔑 Key Highlights:
-    • Strategic importance of the announcement in current market conditions
-    • Expected impact on sector performance and investor sentiment
-    • Potential opportunities for long-term investment strategies
-    • Regulatory and compliance aspects of the development
+    st.markdown(f'<div class="news-modal">{full_content}</div>', unsafe_allow_html=True)
     
-    💼 Expert Opinion: Leading market analysts suggest that this news reflects broader trends in the economy and could influence trading patterns in the coming weeks. The announcement aligns with current market expectations and regulatory frameworks.
-    
-    📈 Market Impact: Early market reaction has been positive, with relevant sector stocks showing increased trading volume. Institutional investors are closely monitoring the situation for potential portfolio adjustments.
-    
-    🔮 Looking Ahead: This development is expected to contribute to overall market stability and growth prospects. Stakeholders across the industry are preparing for the implementation and its subsequent effects on business operations.
-    
-    💰 Investment Perspective: Financial advisors recommend careful consideration of this news in the context of individual investment goals and risk tolerance. The long-term implications suggest potential opportunities for well-positioned investors.
-    
-    🏁 Conclusion: As markets continue to evolve, such developments underscore the importance of staying informed and adapting investment strategies accordingly. The positive market reception indicates confidence in the underlying fundamentals.
-    """)
-    
-    st.markdown(full_content)
     st.markdown("---")
     
-    if st.button("❌ Close Article"):
-        st.rerun()
+    # Enhanced close button
+    col1, col2, col3 = st.columns([1, 1, 1])
+    with col2:
+        if st.button("✕ Close Article", use_container_width=True, type="secondary"):
+            st.rerun()
 
 def get_simulated_sentiment(headline):
     """Simulate sentiment analysis based on keywords"""
