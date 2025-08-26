@@ -329,8 +329,8 @@ class DataManager:
         
         for i, sector in enumerate(sectors):
             # Use real performance data or generate realistic values
-            if sector in performance_data:
-                change_percent = performance_data[sector] + np.random.uniform(-0.2, 0.2)
+            if sector in performance_patterns:
+                change_percent = performance_patterns[sector] + np.random.uniform(-0.2, 0.2)
             else:
                 # Generate based on sector characteristics
                 if any(tech in sector for tech in ['Software', 'IT', 'Tech', 'Digital', 'AI', 'Cyber', 'Cloud']):

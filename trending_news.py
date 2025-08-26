@@ -286,10 +286,8 @@ def render_trending_news():
                 keyword_counts[keyword.title()] = count
         
         if keyword_counts:
-            keyword_df = pd.DataFrame(
-                data=list(keyword_counts.items()),
-                columns=['Keyword', 'Mentions']
-            ).sort_values('Mentions', ascending=False).head(10)
+            keyword_data = [{'Keyword': k, 'Mentions': v} for k, v in keyword_counts.items()]
+            keyword_df = pd.DataFrame(keyword_data).sort_values('Mentions', ascending=False).head(10)
             
             fig_keywords = px.bar(
                 keyword_df,
@@ -319,10 +317,8 @@ def render_trending_news():
                 continue
         
         if news_by_date:
-            timeline_df = pd.DataFrame(
-                data=list(news_by_date.items()),
-                columns=['Date', 'Articles']
-            ).sort_values('Date')
+            timeline_data = [{'Date': k, 'Articles': v} for k, v in news_by_date.items()]
+            timeline_df = pd.DataFrame(timeline_data).sort_values('Date')
             
             fig_timeline = px.line(
                 timeline_df,
@@ -336,29 +332,6 @@ def render_trending_news():
         else:
             st.info("Timeline data not available")
     
-    # News sources analysis
-    st.subheader("📡 News Sources")
-    
-    source_counts = {}
-    for item in news_data:
-        source = item['source']
-        source_counts[source] = source_counts.get(source, 0) + 1
-    
-    if source_counts:
-        source_df = pd.DataFrame(
-            data=list(source_counts.items()),
-            columns=['Source', 'Articles']
-        ).sort_values('Articles', ascending=False).head(10)
-        
-        st.dataframe(
-            source_df,
-            column_config={
-                "Source": "News Source",
-                "Articles": st.column_config.NumberColumn("Article Count")
-            },
-            use_container_width=True,
-            hide_index=True
-        )
 
 def get_category_color(category):
     """Return color for category badge"""

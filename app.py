@@ -49,13 +49,56 @@ if 'last_update' in st.session_state:
     last_update = st.session_state.last_update.astimezone(ist)
     st.info(f"Last Updated: {last_update.strftime('%Y-%m-%d %I:%M:%S %p IST')}")
 
-# Sidebar navigation
+# Sidebar navigation  
 st.sidebar.title("Navigation")
-page = st.sidebar.selectbox(
-    "Select Page",
-    ["🔄 Sector Rotation", "📊 Market Cover", "📰 Trending News"],
-    key="navigation"
-)
+
+# Custom CSS for navigation buttons
+st.sidebar.markdown("""
+<style>
+div.stButton > button {
+    width: 100%;
+    height: 80px;
+    font-size: 12px;
+    font-weight: bold;
+    border-radius: 8px;
+    border: 2px solid #4CAF50;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    transition: all 0.3s ease;
+}
+
+div.stButton > button:hover {
+    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+div.stButton > button:active {
+    background: linear-gradient(135deg, #5a67d8 0%, #667eea 100%);
+}
+</style>
+""", unsafe_allow_html=True)
+
+# Three button navigation
+col1, col2, col3 = st.sidebar.columns(3)
+
+with col1:
+    if st.button("🔄\nSector\nRotation", key="sector_btn", use_container_width=True):
+        st.session_state.current_page = "🔄 Sector Rotation"
+
+with col2:
+    if st.button("📊\nMarket\nCover", key="market_btn", use_container_width=True):
+        st.session_state.current_page = "📊 Market Cover"
+
+with col3:
+    if st.button("📰\nTrending\nNews", key="news_btn", use_container_width=True):
+        st.session_state.current_page = "📰 Trending News"
+
+# Initialize page if not set
+if 'current_page' not in st.session_state:
+    st.session_state.current_page = "🔄 Sector Rotation"
+
+page = st.session_state.current_page
 
 # Auto-refresh indicator
 next_refresh = datetime.now(pytz.timezone('Asia/Kolkata')).replace(hour=16, minute=0, second=0, microsecond=0)
