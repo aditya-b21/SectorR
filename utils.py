@@ -6,28 +6,35 @@ import atexit
 
 def setup_scheduler():
     """Setup the auto-refresh scheduler for 4 PM IST daily"""
-    scheduler = BackgroundScheduler()
-    
-    # Schedule daily refresh at 4 PM IST
-    ist = pytz.timezone('Asia/Kolkata')
-    scheduler.add_job(
-        func=scheduled_refresh,
-        trigger="cron",
-        hour=16,
-        minute=0,
-        timezone=ist,
-        id='daily_refresh'
-    )
-    
     try:
-        scheduler.start()
+        scheduler = BackgroundScheduler(timezone=pytz.timezone('Asia/Kolkata'))
+        
+        # Schedule daily refresh at 4 PM IST (after market closes)
+        scheduler.add_job(
+            func=scheduled_refresh,
+            trigger="cron",
+            hour=16,
+            minute=0,
+            second=0,
+            timezone=pytz.timezone('Asia/Kolkata'),
+            id='daily_market_refresh',
+            replace_existing=True
+        )
+        
+        if not scheduler.running:
+            scheduler.start()
+            print("✅ Auto-refresh scheduler started successfully - Daily refresh at 4:00 PM IST")
+        
         st.session_state.scheduler = scheduler
         
         # Shut down the scheduler when exiting the app
-        atexit.register(lambda: scheduler.shutdown())
+        atexit.register(lambda: scheduler.shutdown() if scheduler.running else None)
+        
+        return True
         
     except Exception as e:
-        st.error(f"Failed to start scheduler: {str(e)}")
+        print(f"❌ Failed to start scheduler: {str(e)}")
+        return False
 
 def scheduled_refresh():
     """Function called by scheduler for auto-refresh"""

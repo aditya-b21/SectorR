@@ -6,8 +6,51 @@ import numpy as np
 from datetime import datetime, timedelta
 
 def render_market_cover():
-    """Render the Market Cover page"""
-    st.header("📊 Market Cover - Indian Indices")
+    """Render the Market Cover page with enhanced UI"""
+    
+    # Custom CSS for market cover styling
+    st.markdown("""
+    <style>
+    .market-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 2rem;
+        border-radius: 15px;
+        color: white;
+        text-align: center;
+        margin-bottom: 2rem;
+        animation: fadeInUp 1s ease-out;
+    }
+    @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(30px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .index-card {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border-radius: 15px;
+        padding: 1.5rem;
+        margin: 1rem 0;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .index-card:hover {
+        transform: translateY(-8px) scale(1.02);
+        box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+    }
+    .metric-enhanced {
+        background: linear-gradient(45deg, #667eea, #764ba2);
+        padding: 1rem;
+        border-radius: 10px;
+        color: white;
+        text-align: center;
+        margin: 0.5rem 0;
+        animation: pulse 2s infinite;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+    
+    # Animated header
+    st.markdown('<div class="market-header"><h1>📊 Live Market Dashboard</h1><p>Real-time Indian market indices with advanced analytics</p></div>', unsafe_allow_html=True)
     
     # Get data manager
     data_manager = st.session_state.data_manager
@@ -23,8 +66,9 @@ def render_market_cover():
         st.error("Unable to load index data. Please try refreshing.")
         return
     
-    # Market Overview Cards
-    st.subheader("📈 Live Index Performance")
+    # Enhanced Market Overview Cards
+    st.markdown('<div class="index-card">', unsafe_allow_html=True)
+    st.subheader("🔥 Live Index Performance Dashboard")
     
     # Create cards for each major index
     indices_per_row = 3
@@ -38,15 +82,17 @@ def render_market_cover():
                 index_data = index_df.iloc[i + j]
                 
                 with col:
-                    # Determine trend color
+                    # Enhanced trend visualization
                     trend_color = "green" if index_data['Percent_Change'] > 0 else "red" if index_data['Percent_Change'] < 0 else "gray"
-                    trend_icon = "↑" if index_data['Percent_Change'] > 0 else "↓" if index_data['Percent_Change'] < 0 else "→"
+                    trend_icon = "📈" if index_data['Percent_Change'] > 0 else "📉" if index_data['Percent_Change'] < 0 else "➡️"
                     
+                    st.markdown('<div class="metric-enhanced">', unsafe_allow_html=True)
                     st.metric(
-                        label=index_data['Index'],
+                        label=f"{trend_icon} {index_data['Index']}",
                         value=f"₹{index_data['Price']:,.2f}",
                         delta=f"{index_data['Change']:+.2f} ({index_data['Percent_Change']:+.2f}%)"
                     )
+                    st.markdown('</div>', unsafe_allow_html=True)
                     
                     # Additional details in expander
                     with st.expander(f"Details for {index_data['Index']}"):
@@ -110,7 +156,7 @@ def render_market_cover():
         historical_data['Low'] = historical_data[['Price', 'Open']].min(axis=1) * (1 - np.random.uniform(0, 0.02, len(dates)))
         historical_data['Close'] = historical_data['Price']
         
-        # Create the main price chart
+        # Create enhanced candlestick chart
         fig = go.Figure()
         
         fig.add_trace(go.Candlestick(
@@ -119,15 +165,21 @@ def render_market_cover():
             high=historical_data['High'],
             low=historical_data['Low'],
             close=historical_data['Close'],
-            name=selected_index
+            name=selected_index,
+            increasing_line_color='#26C281',
+            decreasing_line_color='#ED4A7B'
         ))
         
         fig.update_layout(
-            title=f"{selected_index} - {time_period} Performance",
-            xaxis_title="Date",
-            yaxis_title="Price (₹)",
-            height=500,
-            xaxis_rangeslider_visible=False
+            title=f"<b>📈 {selected_index} - {time_period} Performance Analysis</b>",
+            xaxis_title="📅 Date",
+            yaxis_title="💵 Price (₹)",
+            height=600,
+            xaxis_rangeslider_visible=False,
+            plot_bgcolor='rgba(0,0,0,0)',
+            paper_bgcolor='rgba(0,0,0,0)',
+            font=dict(size=12),
+            title_font_size=18
         )
         
         st.plotly_chart(fig, use_container_width=True)
@@ -142,8 +194,11 @@ def render_market_cover():
         fig_volume.update_layout(height=300)
         st.plotly_chart(fig_volume, use_container_width=True)
     
-    # Comparative Performance Chart
-    st.subheader("🔄 Comparative Index Performance")
+    st.markdown('</div>', unsafe_allow_html=True)
+    
+    # Enhanced Comparative Performance Chart
+    st.markdown('<div class="index-card">', unsafe_allow_html=True)
+    st.subheader("🏆 Comparative Index Performance Arena")
     
     # Multi-select for comparison
     comparison_indices = st.multiselect(
@@ -162,9 +217,23 @@ def render_market_cover():
             x='Index',
             y='Percent_Change',
             color='Percent_Change',
-            color_continuous_scale=['red', 'yellow', 'green'],
-            title="Index Performance Comparison (% Change)",
+            color_continuous_scale=['#FF4757', '#FFA502', '#2ED573', '#1E90FF'],
+            title="<b>🏁 Live Index Performance Battle</b>",
             text='Percent_Change'
+        )
+        
+        fig_comparison.update_traces(
+            texttemplate='%{text:.2f}%',
+            textposition='outside',
+            hovertemplate='<b>%{x}</b><br>Performance: %{y:.2f}%<extra></extra>'
+        )
+        fig_comparison.update_layout(
+            height=500,
+            showlegend=False,
+            plot_bgcolor='rgba(0,0,0,0)',
+            paper_bgcolor='rgba(0,0,0,0)',
+            title_font_size=18,
+            xaxis=dict(tickangle=45)
         )
         
         fig_comparison.update_traces(texttemplate='%{text:.2f}%', textposition='outside')
@@ -191,8 +260,11 @@ def render_market_cover():
             hide_index=True
         )
     
-    # Market Breadth Analysis
-    st.subheader("🎯 Market Breadth Analysis")
+    st.markdown('</div>', unsafe_allow_html=True)
+    
+    # Enhanced Market Breadth Analysis
+    st.markdown('<div class="index-card">', unsafe_allow_html=True)
+    st.subheader("🏀 Market Sentiment & Breadth Analysis")
     
     col1, col2, col3 = st.columns(3)
     
@@ -211,11 +283,25 @@ def render_market_cover():
             breadth_data,
             values='Count',
             names='Status',
+            title="<b>🎯 Market Breadth Overview</b>",
             color_discrete_map={
-                'Advancing': 'green',
-                'Declining': 'red',
-                'Unchanged': 'gray'
+                'Advancing': '#2ED573',
+                'Declining': '#FF4757',
+                'Unchanged': '#747D8C'
             }
+        )
+        fig_breadth.update_traces(
+            textposition='inside',
+            textinfo='percent+label',
+            hovertemplate='<b>%{label}</b><br>Count: %{value}<br>Percentage: %{percent}<extra></extra>',
+            pull=[0.1, 0, 0]
+        )
+        fig_breadth.update_layout(
+            height=400,
+            showlegend=True,
+            plot_bgcolor='rgba(0,0,0,0)',
+            paper_bgcolor='rgba(0,0,0,0)',
+            title_font_size=16
         )
         fig_breadth.update_layout(height=300)
         st.plotly_chart(fig_breadth, use_container_width=True)
@@ -270,9 +356,16 @@ def render_market_cover():
             correlation_df,
             color_continuous_scale='RdBu',
             aspect='auto',
-            title="Index Correlation Matrix"
+            title="<b>🔗 Index Correlation Heat Matrix</b>"
+        )
+        fig_corr.update_layout(
+            height=500,
+            plot_bgcolor='rgba(0,0,0,0)',
+            paper_bgcolor='rgba(0,0,0,0)',
+            title_font_size=16
         )
         fig_corr.update_layout(height=400)
         st.plotly_chart(fig_corr, use_container_width=True)
         
         st.info("📊 Correlation values closer to 1.0 indicate indices move together, while values closer to 0 indicate independent movement.")
+    st.markdown('</div>', unsafe_allow_html=True)

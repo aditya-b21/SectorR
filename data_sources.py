@@ -165,11 +165,62 @@ class DataManager:
             return self._generate_sample_sector_data()
     
     def _generate_sample_sector_data(self):
-        """Generate realistic sample sector data"""
+        """Generate realistic sample sector data with 100+ sectors"""
         sectors = [
+            # Main Indices
             'NIFTY IT', 'NIFTY BANK', 'NIFTY PHARMA', 'NIFTY FMCG', 
             'NIFTY AUTO', 'NIFTY METAL', 'NIFTY ENERGY', 'NIFTY INFRA',
-            'NIFTY REALTY', 'NIFTY PSU BANK', 'NIFTY MEDIA', 'NIFTY PSE'
+            'NIFTY REALTY', 'NIFTY PSU BANK', 'NIFTY MEDIA', 'NIFTY PSE',
+            
+            # Additional Sectoral Indices
+            'NIFTY HEALTHCARE', 'NIFTY CONSUMER DURABLES', 'NIFTY OIL & GAS',
+            'NIFTY COMMODITIES', 'NIFTY CONSUMPTION', 'NIFTY CPSE', 
+            'NIFTY DIVIDEND OPPORTUNITIES 50', 'NIFTY FINANCIAL SERVICES',
+            'NIFTY FMCG', 'NIFTY GROWTH SECTORS 15', 'NIFTY INDIA CONSUMPTION',
+            'NIFTY INDIA DIGITAL', 'NIFTY INDIA MANUFACTURING', 'NIFTY LARGEMIDCAP 250',
+            'NIFTY MICROCAP 250', 'NIFTY MIDCAP 50', 'NIFTY MIDCAP 100',
+            'NIFTY MIDCAP 150', 'NIFTY MIDCAP LIQUID 15', 'NIFTY MNC',
+            'NIFTY NEXT 50', 'NIFTY100 ENHANCED ESG', 'NIFTY100 ESG',
+            'NIFTY200 QUALITY 30', 'NIFTY500 MULTICAP 50:25:25',
+            'NIFTY SMALLCAP 50', 'NIFTY SMALLCAP 100', 'NIFTY SMALLCAP 250',
+            'NIFTY TOTAL MARKET', 'NIFTY100 ALPHA 30', 'NIFTY100 LOW VOLATILITY 30',
+            
+            # Industry Specific
+            'AGRICULTURE', 'CHEMICALS', 'CONSTRUCTION', 'DEFENCE', 'DIVERSIFIED',
+            'EDUCATION', 'FERTILIZERS', 'FOOD PROCESSING', 'GEMS & JEWELLERY',
+            'HOTELS', 'HOUSING', 'INDUSTRIAL MANUFACTURING', 'LEATHER',
+            'LOGISTICS', 'MINING', 'PAPER', 'PESTICIDES', 'PHARMACEUTICALS',
+            'PLASTICS', 'PORTS', 'POWER', 'RAILWAYS', 'RETAIL', 'SHIPPING',
+            'STEEL', 'SUGAR', 'TELECOM', 'TEXTILES', 'TOBACCO', 'TOURISM',
+            'TRADING', 'TRANSPORT', 'UTILITIES', 'WAREHOUSING',
+            
+            # Technology Sectors
+            'SOFTWARE', 'HARDWARE', 'TELECOMMUNICATIONS', 'INTERNET',
+            'E-COMMERCE', 'FINTECH', 'EDTECH', 'HEALTHTECH', 'AGRITECH',
+            'BLOCKCHAIN', 'ARTIFICIAL INTELLIGENCE', 'CYBERSECURITY',
+            
+            # Financial Services
+            'COMMERCIAL BANKS', 'PRIVATE BANKS', 'COOPERATIVE BANKS',
+            'NBFC', 'INSURANCE', 'MUTUAL FUNDS', 'CAPITAL MARKETS',
+            'COMMODITY TRADING', 'FOREX', 'PAYMENT SYSTEMS',
+            
+            # Consumer Sectors
+            'CONSUMER ELECTRONICS', 'APPLIANCES', 'FASHION', 'BEAUTY',
+            'WELLNESS', 'SPORTS', 'ENTERTAINMENT', 'GAMING',
+            
+            # Infrastructure
+            'ROADS', 'AIRPORTS', 'SMART CITIES', 'RENEWABLE ENERGY',
+            'SOLAR POWER', 'WIND ENERGY', 'HYDROELECTRIC',
+            
+            # Emerging Sectors
+            'ELECTRIC VEHICLES', 'BATTERY TECHNOLOGY', 'SPACE TECHNOLOGY',
+            'BIOTECHNOLOGY', 'GENOMICS', 'MEDICAL DEVICES', 'ROBOTICS',
+            'DRONES', 'IOT', 'CLOUD COMPUTING', 'DATA ANALYTICS',
+            
+            # Traditional Industries
+            'COTTON', 'JUTE', 'SILK', 'WOOL', 'SPICES', 'TEA', 'COFFEE',
+            'RICE', 'WHEAT', 'PULSES', 'OILSEEDS', 'DAIRY', 'POULTRY',
+            'FISHERIES', 'FORESTRY', 'HANDLOOM', 'HANDICRAFTS'
         ]
         
         np.random.seed(42)  # For consistent demo data
@@ -193,6 +244,48 @@ class DataManager:
         df = pd.DataFrame(sectors_list)
         df['Trend'] = df['Percent_Change'].apply(lambda x: '↑' if x > 0 else '↓' if x < 0 else '→')
         return df
+    
+    def get_sector_stocks(self, sector_name):
+        """Get stocks within a specific sector"""
+        try:
+            # Generate sample stocks for the selected sector
+            sector_stocks_map = {
+                'NIFTY IT': ['TCS', 'INFY', 'HCLTECH', 'WIPRO', 'TECHM', 'LTTS', 'MINDTREE', 'MPHASIS', 'LTIM', 'COFORGE'],
+                'NIFTY BANK': ['HDFCBANK', 'ICICIBANK', 'KOTAKBANK', 'SBIN', 'AXISBANK', 'INDUSINDBK', 'BANDHANBNK', 'FEDERALBNK', 'IDFCFIRSTB', 'PNB'],
+                'NIFTY PHARMA': ['SUNPHARMA', 'DRREDDY', 'CIPLA', 'DIVISLAB', 'BIOCON', 'CADILAHC', 'GLENMARK', 'LUPIN', 'TORNTPHARM', 'ALKEM'],
+                'NIFTY AUTO': ['MARUTI', 'TATAMOTORS', 'M&M', 'BAJAJ-AUTO', 'HEROMOTOCO', 'TVSMOTORS', 'EICHERMOT', 'ASHOKLEY', 'ESCORTS', 'BALKRISIND'],
+                'NIFTY FMCG': ['HINDUNILVR', 'ITC', 'NESTLEIND', 'BRITANNIA', 'DABUR', 'MARICO', 'GODREJCP', 'COLPAL', 'UBL', 'TATACONSUM']
+            }
+            
+            # Get default stocks or generate for other sectors
+            stock_symbols = sector_stocks_map.get(sector_name, [
+                f'STOCK{i}' for i in range(1, 21)  # Generate 20 sample stocks
+            ])
+            
+            stocks_data = []
+            np.random.seed(hash(sector_name) % 100)  # Consistent data per sector
+            
+            for symbol in stock_symbols:
+                price = np.random.uniform(100, 5000)
+                change_pct = np.random.uniform(-8, 8)
+                change = price * (change_pct / 100)
+                volume = np.random.randint(100000, 10000000)
+                
+                stocks_data.append({
+                    'Symbol': symbol,
+                    'Current_Price': price,
+                    'Change': change,
+                    'Percent_Change': change_pct,
+                    'Volume': volume,
+                    'High': price * 1.05,
+                    'Low': price * 0.95
+                })
+            
+            return pd.DataFrame(stocks_data)
+            
+        except Exception as e:
+            print(f"Error fetching sector stocks: {str(e)}")
+            return pd.DataFrame()
 
     def get_top_gainers_losers(self):
         """Get top gainers and losers from NSE"""
@@ -582,42 +675,123 @@ class DataManager:
         return []
     
     def _generate_sample_news(self):
-        """Generate realistic sample financial news"""
-        sample_headlines = [
-            "Nifty 50 rises 1.2% as banking stocks lead rally in today's trading session",
-            "Sensex crosses 75,000 mark for first time amid strong FII inflows",
-            "IT stocks surge on positive Q3 earnings outlook from major companies",
-            "RBI keeps repo rate unchanged at 6.5% in latest monetary policy review",
-            "Pharma sector gains 2.3% on new drug approvals and export demand",
-            "Auto stocks mixed as festive season sales data shows varied performance",
-            "Metal stocks decline on global commodity price concerns and China demand",
-            "Banking sector outperforms with PSU banks leading the charge today",
-            "FMCG stocks rise on rural demand recovery and margin improvement",
-            "Energy stocks gain on crude oil price stability and refining margins",
-            "Small-cap and mid-cap indices outperform benchmark Nifty 50 index",
-            "FII net buying continues for third consecutive session this week",
-            "IPO market sees strong response with oversubscription in recent listings",
-            "Rupee strengthens against dollar on positive economic indicators",
-            "Market volatility expected ahead of quarterly earnings season"
+        """Generate realistic sample financial news for different categories"""
+        
+        company_news = [
+            "Reliance Industries announces major expansion in green energy sector with $10B investment",
+            "Tata Consultancy Services reports record quarterly revenue growth of 15.2%",
+            "HDFC Bank launches new digital banking platform targeting rural customers",
+            "Infosys wins multi-million dollar contract from European financial services firm",
+            "Wipro announces strategic partnership with major cloud computing provider",
+            "ITC diversifies portfolio with new health and wellness product line",
+            "Maruti Suzuki plans to launch 5 new electric vehicle models this year",
+            "Asian Paints expands operations to three new international markets",
+            "Bharti Airtel reports significant increase in 5G subscriber base",
+            "Sun Pharma receives FDA approval for new diabetes medication"
         ]
         
-        categories = [
-            'Industry & Market', 'Company News', 'Economy Market Pulse', 
-            'Company Earnings', 'IPO Analysis', 'Global Equity News'
+        ipo_news = [
+            "Tech startup announces IPO plans with estimated valuation of $2 billion",
+            "Renewable energy company files for public listing on NSE and BSE",
+            "E-commerce platform prepares for one of the largest IPOs of the year",
+            "Fintech unicorn sets price band for upcoming initial public offering",
+            "Healthcare services provider receives SEBI approval for IPO launch",
+            "Digital payments company announces roadshow for public listing",
+            "Food delivery platform files draft papers for stock market debut",
+            "Insurance technology firm plans to raise funds through IPO route",
+            "Logistics company announces IPO to fund expansion across India",
+            "EdTech platform prepares for public listing amid growth in online learning"
+        ]
+        
+        global_news = [
+            "US Federal Reserve maintains interest rates, impacts emerging market flows",
+            "European markets rally on positive economic data from major economies",
+            "Asian markets mixed as China announces new economic stimulus measures",
+            "Global commodity prices surge on supply chain disruption concerns",
+            "International crude oil prices stabilize after recent volatility",
+            "Foreign institutional investors increase allocation to Indian equities",
+            "Global technology stocks face pressure amid regulatory concerns",
+            "Emerging market currencies strengthen against US dollar",
+            "International trade tensions ease as major economies resume talks",
+            "Global inflation trends show signs of moderation across regions"
+        ]
+        
+        total_news = company_news + ipo_news + global_news + [
+            "Market indices reach new highs on positive earnings expectations",
+            "Banking sector leads market rally with strong quarterly results",
+            "Technology stocks gain momentum on AI and digital transformation trends",
+            "Pharmaceutical sector shows resilience amid global health concerns",
+            "Auto industry adapts to electric vehicle transition with new investments",
+            "FMCG companies report steady growth in rural and urban markets",
+            "Infrastructure sector benefits from government policy initiatives",
+            "Energy sector transformation accelerates with renewable investments",
+            "Financial services digitization drives sector growth and efficiency",
+            "Manufacturing sector shows signs of recovery with increased capacity utilization"
         ]
         
         news_items = []
-        for i, headline in enumerate(sample_headlines):
+        
+        # Add company news
+        for i, headline in enumerate(company_news):
             news_items.append({
                 'headline': headline,
-                'category': categories[i % len(categories)],
+                'category': 'Company News',
                 'timestamp': (datetime.now() - timedelta(hours=i)).isoformat(),
-                'source': 'Market News',
-                'url': 'https://example.com/news',
-                'description': headline + ' - Market analysis shows continued positive sentiment among investors...'
+                'source': 'Financial News Network',
+                'url': '#',
+                'description': headline + ' - Detailed analysis reveals strategic implications for the company\'s future growth prospects and market positioning in the competitive landscape.',
+                'full_content': self._generate_full_news_content(headline)
+            })
+        
+        # Add IPO news
+        for i, headline in enumerate(ipo_news):
+            news_items.append({
+                'headline': headline,
+                'category': 'IPO News',
+                'timestamp': (datetime.now() - timedelta(hours=i+10)).isoformat(),
+                'source': 'IPO Watch',
+                'url': '#',
+                'description': headline + ' - Market experts analyze the potential impact and investment opportunities in the upcoming public offering.',
+                'full_content': self._generate_full_news_content(headline)
+            })
+        
+        # Add global news
+        for i, headline in enumerate(global_news):
+            news_items.append({
+                'headline': headline,
+                'category': 'Global News',
+                'timestamp': (datetime.now() - timedelta(hours=i+20)).isoformat(),
+                'source': 'Global Markets Today',
+                'url': '#',
+                'description': headline + ' - International developments continue to influence domestic market sentiment and investment flows.',
+                'full_content': self._generate_full_news_content(headline)
             })
         
         return news_items
+    
+    def _generate_full_news_content(self, headline):
+        """Generate full news content for modal display"""
+        return f"""
+        {headline}
+        
+        Market Analysis: This development represents a significant milestone in the current economic environment. Industry experts believe this will have far-reaching implications for investors and market participants.
+        
+        Key Highlights:
+        • Strategic importance of the announcement in current market conditions
+        • Expected impact on sector performance and investor sentiment
+        • Potential opportunities for long-term investment strategies
+        • Regulatory and compliance aspects of the development
+        
+        Expert Opinion: Leading market analysts suggest that this news reflects broader trends in the economy and could influence trading patterns in the coming weeks. The announcement aligns with current market expectations and regulatory frameworks.
+        
+        Market Impact: Early market reaction has been positive, with relevant sector stocks showing increased trading volume. Institutional investors are closely monitoring the situation for potential portfolio adjustments.
+        
+        Looking Ahead: This development is expected to contribute to overall market stability and growth prospects. Stakeholders across the industry are preparing for the implementation and its subsequent effects on business operations.
+        
+        Investment Perspective: Financial advisors recommend careful consideration of this news in the context of individual investment goals and risk tolerance. The long-term implications suggest potential opportunities for well-positioned investors.
+        
+        Conclusion: As markets continue to evolve, such developments underscore the importance of staying informed and adapting investment strategies accordingly. The positive market reception indicates confidence in the underlying fundamentals.
+        """
 
     def _categorize_news(self, text):
         """Categorize news based on keywords"""
