@@ -165,29 +165,79 @@ class DataManager:
             return self._generate_sample_sector_data()
     
     def _generate_sample_sector_data(self):
-        """Generate realistic sample sector data with 100+ sectors"""
+        """Generate comprehensive sector and sub-sector data with 150+ categories"""
         sectors = [
-            # Top Performance Sectors (Based on current market trends)
-            'Cycles', 'Automobiles-Trucks/LCV', 'Advertising & Media', 'Fintech', 'Refineries', 
-            'Glass', 'Amusement Parks/Recreation/Club', 'Diversified', 'Port', 'Oil Exploration',
-            'Finance - Housing', 'Finance - Asset Management', 'Fertilizers & Chemicals', 'Paper',
-            'Hotels/Restaurants', 'Engineering', 'Power - Transmission', 'Textiles - Readymade Apparels',
+            # Automotive Sector & Sub-sectors
+            'Automobiles - Passenger Cars', 'Automobiles - Luxury Cars', 'Automobiles - Electric Vehicles',
+            'Automobiles - Two Wheelers', 'Automobiles - Three Wheelers', 'Automobiles - Commercial Vehicles',
+            'Automobiles - Trucks/LCV', 'Automobiles - Buses', 'Auto Components - Engine Parts',
+            'Auto Components - Transmission', 'Auto Components - Brake Systems', 'Auto Components - Electrical',
+            'Tyres - Passenger Car', 'Tyres - Commercial Vehicle', 'Tyres - Two Wheeler',
+            'Auto Ancillaries - Bearings', 'Auto Ancillaries - Castings', 'Auto Ancillaries - Forgings',
             
-            # Technology & Digital
-            'Software', 'IT Services', 'Internet & Catalogue Retail', 'Telecommunications',
-            'Computer Hardware', 'Electronics', 'Semiconductors', 'Data Processing Services',
-            'Artificial Intelligence', 'Cloud Computing', 'Cybersecurity', 'EdTech', 'HealthTech',
-            'Fintech Payments', 'E-Commerce Platforms', 'Digital Marketing', 'Software Development',
-            'Mobile Applications', 'Gaming Technology', 'Blockchain Technology', 'IoT Solutions',
-            'Digital Transformation', 'Tech Consulting', 'Platform Economy', 'SaaS Products',
+            # Cycles & Related Sub-sectors
+            'Cycles - Standard Bicycles', 'Cycles - Electric Bicycles', 'Cycles - Mountain Bikes',
+            'Cycles - Racing Bikes', 'Cycles - Kids Bikes', 'Cycle Parts & Accessories',
             
-            # Financial Services Extended
-            'Banking - Private', 'Banking - PSU', 'Banking - Small Finance', 'NBFC - Consumer Finance',
-            'NBFC - Housing Finance', 'NBFC - Microfinance', 'Insurance - Life', 'Insurance - General',
-            'Insurance - Health', 'Asset Management Companies', 'Capital Markets', 'Commodity Trading',
-            'Foreign Exchange Services', 'Payment Systems', 'Credit Rating Agencies', 'Financial Technology',
-            'Investment Banking', 'Mutual Funds', 'Pension Funds', 'Alternative Investment Funds',
-            'Stock Exchanges', 'Clearing Corporations', 'Depositories', 'Financial Advisors',
+            # Technology Sector Detailed Breakdown
+            'Software - Enterprise Solutions', 'Software - Consumer Applications', 'Software - Gaming',
+            'IT Services - Consulting', 'IT Services - Development', 'IT Services - Testing',
+            'IT Services - Maintenance', 'Cloud Computing - SaaS', 'Cloud Computing - PaaS',
+            'Cloud Computing - Infrastructure', 'Artificial Intelligence - Machine Learning',
+            'Artificial Intelligence - Natural Language', 'Artificial Intelligence - Computer Vision',
+            'Cybersecurity - Network Security', 'Cybersecurity - Data Protection', 'Cybersecurity - Identity Management',
+            'Fintech - Digital Payments', 'Fintech - Lending Platforms', 'Fintech - Wealth Management',
+            'Fintech - Insurance Tech', 'EdTech - Online Learning', 'EdTech - Skill Development',
+            'HealthTech - Telemedicine', 'HealthTech - Digital Diagnostics', 'HealthTech - Health Records',
+            
+            # Media & Entertainment Detailed
+            'Advertising & Media - Digital Advertising', 'Advertising & Media - Print Media', 
+            'Advertising & Media - Television', 'Advertising & Media - Radio', 'Advertising & Media - Outdoor',
+            'Entertainment - Film Production', 'Entertainment - Music Streaming', 'Entertainment - Gaming',
+            'Entertainment - OTT Platforms', 'Entertainment - Live Events',
+            
+            # Industrial & Manufacturing Sub-sectors
+            'Engineering - Heavy Engineering', 'Engineering - Precision Engineering', 'Engineering - Industrial Automation',
+            'Manufacturing - Textile Machinery', 'Manufacturing - Food Processing Equipment', 'Manufacturing - Packaging Machinery',
+            'Industrial Equipment - Pumps', 'Industrial Equipment - Compressors', 'Industrial Equipment - Valves',
+            'Capital Goods - Construction Equipment', 'Capital Goods - Mining Equipment', 'Capital Goods - Agricultural Equipment',
+            
+            # Glass & Ceramics Sub-sectors
+            'Glass - Flat Glass', 'Glass - Container Glass', 'Glass - Specialty Glass', 'Glass - Automotive Glass',
+            'Ceramics - Floor Tiles', 'Ceramics - Wall Tiles', 'Ceramics - Sanitary Ware', 'Ceramics - Tableware',
+            
+            # Refineries & Petrochemicals Detailed
+            'Refineries - Crude Oil Processing', 'Refineries - Petroleum Products', 'Refineries - Specialty Chemicals',
+            'Petrochemicals - Basic Chemicals', 'Petrochemicals - Polymers', 'Petrochemicals - Synthetic Fibers',
+            'Oil Exploration - Upstream', 'Oil Exploration - Downstream', 'Oil Exploration - Midstream',
+            
+            # Diversified Business Sub-sectors
+            'Diversified - Conglomerates', 'Diversified - Investment Holdings', 'Diversified - Trading Companies',
+            'Diversified - Multi-Industry', 'Diversified - Family Offices',
+            
+            # Port & Logistics Detailed
+            'Port - Container Handling', 'Port - Bulk Cargo', 'Port - Liquid Cargo', 'Port - Passenger Services',
+            'Logistics - Freight Forwarding', 'Logistics - Express Delivery', 'Logistics - Last Mile',
+            'Logistics - Warehousing', 'Logistics - Cold Chain', 'Supply Chain - Management Software',
+            'Supply Chain - Tracking Systems', 'Supply Chain - Optimization',
+            
+            # Amusement & Recreation Detailed
+            'Amusement Parks - Theme Parks', 'Amusement Parks - Water Parks', 'Amusement Parks - Adventure Sports',
+            'Recreation - Sports Facilities', 'Recreation - Gaming Centers', 'Recreation - Fitness Centers',
+            'Recreation - Clubs', 'Recreation - Resorts', 'Tourism - Travel Agencies', 'Tourism - Hotels',
+            'Tourism - Transportation', 'Tourism - Adventure Tourism',
+            
+            # Finance Sector Comprehensive Breakdown
+            'Finance - Housing Finance', 'Finance - Asset Management', 'Finance - Wealth Management',
+            'Finance - Investment Banking', 'Finance - Retail Banking', 'Finance - Corporate Banking',
+            'Banking - Private Sector', 'Banking - Public Sector', 'Banking - Cooperative Banks',
+            'Banking - Regional Rural Banks', 'Banking - Payment Banks', 'Banking - Small Finance Banks',
+            'NBFC - Vehicle Finance', 'NBFC - Personal Loans', 'NBFC - Business Loans', 'NBFC - Gold Loans',
+            'NBFC - Education Loans', 'NBFC - Agricultural Finance', 'Insurance - Motor Insurance',
+            'Insurance - Health Insurance', 'Insurance - Life Insurance', 'Insurance - Travel Insurance',
+            'Insurance - Crop Insurance', 'Mutual Funds - Equity Funds', 'Mutual Funds - Debt Funds',
+            'Mutual Funds - Hybrid Funds', 'Capital Markets - Stock Exchanges', 'Capital Markets - Commodity Exchanges',
+            'Fintech - Digital Wallets', 'Fintech - UPI Services', 'Fintech - Crypto Exchanges',
             
             # Manufacturing & Industrial
             'Industrial Manufacturing', 'Capital Goods', 'Machinery', 'Electrical Equipment',
@@ -258,14 +308,20 @@ class DataManager:
             'ESG Solutions', 'Sustainability Services', 'Circular Economy', 'Smart Manufacturing'
         ]
         
-        # Create realistic sector performance based on market patterns
-        performance_data = {
-            'Cycles': 3.52, 'Automobiles-Trucks/LCV': 3.29, 'Advertising & Media': 3.10,
-            'Fintech': 3.06, 'Refineries': 2.59, 'Glass': 2.51, 'Amusement Parks/Recreation/Club': 2.22,
-            'Diversified': 2.04, 'Port': 1.99, 'Oil Exploration': 1.87, 'Finance - Housing': 1.78,
-            'Finance - Asset Management': 1.46, 'Fertilizers & Chemicals': 1.34, 'Paper': 1.28,
-            'Hotels/Restaurants': 1.15, 'Engineering': 1.02, 'Power - Transmission': 0.89,
-            'Textiles - Readymade Apparels': 0.76, 'Pharmaceuticals': 0.63
+        # Comprehensive sector performance patterns without revealing sources
+        performance_patterns = {
+            'Cycles - Standard Bicycles': 3.52, 'Automobiles - Trucks/LCV': 3.29, 
+            'Advertising & Media - Digital Advertising': 3.10, 'Fintech - Digital Payments': 3.06,
+            'Refineries - Crude Oil Processing': 2.59, 'Glass - Flat Glass': 2.51, 
+            'Amusement Parks - Theme Parks': 2.22, 'Diversified - Conglomerates': 2.04,
+            'Port - Container Handling': 1.99, 'Oil Exploration - Upstream': 1.87,
+            'Finance - Housing Finance': 1.78, 'Finance - Asset Management': 1.46,
+            'Fertilizers & Chemicals': 1.34, 'Paper - Packaging': 1.28,
+            'Hotels/Restaurants': 1.15, 'Engineering - Heavy Engineering': 1.02,
+            'Power - Transmission': 0.89, 'Textiles - Readymade Apparels': 0.76,
+            'Pharmaceuticals': 0.63, 'Auto Components - Engine Parts': 2.85,
+            'Tyres - Passenger Car': 2.45, 'Software - Enterprise Solutions': 2.92,
+            'Banking - Private Sector': 1.85, 'Insurance - Life Insurance': 1.55
         }
         
         sectors_list = []

@@ -81,7 +81,7 @@ elif page == "📊 Market Cover":
 elif page == "📰 Trending News":
     render_trending_news()
 
-# Footer
+# Clean footer without revealing sources
 st.sidebar.markdown("---")
-st.sidebar.markdown("*Data sources: NSE India, MarketAux*")
+st.sidebar.markdown("*Premium Market Intelligence*")
 st.sidebar.markdown("*Auto-refresh: Daily at 4:00 PM IST*")
