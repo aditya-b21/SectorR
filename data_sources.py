@@ -167,78 +167,146 @@ class DataManager:
     def _generate_sample_sector_data(self):
         """Generate realistic sample sector data with 100+ sectors"""
         sectors = [
-            # Main Indices
-            'NIFTY IT', 'NIFTY BANK', 'NIFTY PHARMA', 'NIFTY FMCG', 
-            'NIFTY AUTO', 'NIFTY METAL', 'NIFTY ENERGY', 'NIFTY INFRA',
-            'NIFTY REALTY', 'NIFTY PSU BANK', 'NIFTY MEDIA', 'NIFTY PSE',
+            # Top Performance Sectors (Based on current market trends)
+            'Cycles', 'Automobiles-Trucks/LCV', 'Advertising & Media', 'Fintech', 'Refineries', 
+            'Glass', 'Amusement Parks/Recreation/Club', 'Diversified', 'Port', 'Oil Exploration',
+            'Finance - Housing', 'Finance - Asset Management', 'Fertilizers & Chemicals', 'Paper',
+            'Hotels/Restaurants', 'Engineering', 'Power - Transmission', 'Textiles - Readymade Apparels',
             
-            # Additional Sectoral Indices
-            'NIFTY HEALTHCARE', 'NIFTY CONSUMER DURABLES', 'NIFTY OIL & GAS',
-            'NIFTY COMMODITIES', 'NIFTY CONSUMPTION', 'NIFTY CPSE', 
-            'NIFTY DIVIDEND OPPORTUNITIES 50', 'NIFTY FINANCIAL SERVICES',
-            'NIFTY FMCG', 'NIFTY GROWTH SECTORS 15', 'NIFTY INDIA CONSUMPTION',
-            'NIFTY INDIA DIGITAL', 'NIFTY INDIA MANUFACTURING', 'NIFTY LARGEMIDCAP 250',
-            'NIFTY MICROCAP 250', 'NIFTY MIDCAP 50', 'NIFTY MIDCAP 100',
-            'NIFTY MIDCAP 150', 'NIFTY MIDCAP LIQUID 15', 'NIFTY MNC',
-            'NIFTY NEXT 50', 'NIFTY100 ENHANCED ESG', 'NIFTY100 ESG',
-            'NIFTY200 QUALITY 30', 'NIFTY500 MULTICAP 50:25:25',
-            'NIFTY SMALLCAP 50', 'NIFTY SMALLCAP 100', 'NIFTY SMALLCAP 250',
-            'NIFTY TOTAL MARKET', 'NIFTY100 ALPHA 30', 'NIFTY100 LOW VOLATILITY 30',
+            # Technology & Digital
+            'Software', 'IT Services', 'Internet & Catalogue Retail', 'Telecommunications',
+            'Computer Hardware', 'Electronics', 'Semiconductors', 'Data Processing Services',
+            'Artificial Intelligence', 'Cloud Computing', 'Cybersecurity', 'EdTech', 'HealthTech',
+            'Fintech Payments', 'E-Commerce Platforms', 'Digital Marketing', 'Software Development',
+            'Mobile Applications', 'Gaming Technology', 'Blockchain Technology', 'IoT Solutions',
+            'Digital Transformation', 'Tech Consulting', 'Platform Economy', 'SaaS Products',
             
-            # Industry Specific
-            'AGRICULTURE', 'CHEMICALS', 'CONSTRUCTION', 'DEFENCE', 'DIVERSIFIED',
-            'EDUCATION', 'FERTILIZERS', 'FOOD PROCESSING', 'GEMS & JEWELLERY',
-            'HOTELS', 'HOUSING', 'INDUSTRIAL MANUFACTURING', 'LEATHER',
-            'LOGISTICS', 'MINING', 'PAPER', 'PESTICIDES', 'PHARMACEUTICALS',
-            'PLASTICS', 'PORTS', 'POWER', 'RAILWAYS', 'RETAIL', 'SHIPPING',
-            'STEEL', 'SUGAR', 'TELECOM', 'TEXTILES', 'TOBACCO', 'TOURISM',
-            'TRADING', 'TRANSPORT', 'UTILITIES', 'WAREHOUSING',
+            # Financial Services Extended
+            'Banking - Private', 'Banking - PSU', 'Banking - Small Finance', 'NBFC - Consumer Finance',
+            'NBFC - Housing Finance', 'NBFC - Microfinance', 'Insurance - Life', 'Insurance - General',
+            'Insurance - Health', 'Asset Management Companies', 'Capital Markets', 'Commodity Trading',
+            'Foreign Exchange Services', 'Payment Systems', 'Credit Rating Agencies', 'Financial Technology',
+            'Investment Banking', 'Mutual Funds', 'Pension Funds', 'Alternative Investment Funds',
+            'Stock Exchanges', 'Clearing Corporations', 'Depositories', 'Financial Advisors',
             
-            # Technology Sectors
-            'SOFTWARE', 'HARDWARE', 'TELECOMMUNICATIONS', 'INTERNET',
-            'E-COMMERCE', 'FINTECH', 'EDTECH', 'HEALTHTECH', 'AGRITECH',
-            'BLOCKCHAIN', 'ARTIFICIAL INTELLIGENCE', 'CYBERSECURITY',
+            # Manufacturing & Industrial
+            'Industrial Manufacturing', 'Capital Goods', 'Machinery', 'Electrical Equipment',
+            'Construction Equipment', 'Agricultural Equipment', 'Bearings', 'Castings & Forgings',
+            'Industrial Automation', 'Robotics & Automation', 'Precision Engineering',
+            'Defence Equipment', 'Aerospace', 'Railway Equipment', 'Marine Equipment',
+            'Heavy Engineering', 'Machine Tools', 'Industrial Pumps', 'Compressors',
+            'Process Equipment', 'Material Handling', 'Fabrication Services', 'Tool Manufacturing',
             
-            # Financial Services
-            'COMMERCIAL BANKS', 'PRIVATE BANKS', 'COOPERATIVE BANKS',
-            'NBFC', 'INSURANCE', 'MUTUAL FUNDS', 'CAPITAL MARKETS',
-            'COMMODITY TRADING', 'FOREX', 'PAYMENT SYSTEMS',
+            # Consumer & Retail
+            'FMCG - Food Products', 'FMCG - Personal Care', 'FMCG - Household Products',
+            'Consumer Durables', 'Consumer Electronics', 'Home Appliances', 'Footwear', 'Apparel',
+            'Jewelry', 'Watches', 'Luxury Goods', 'Retail - Organized', 'Retail - Specialty',
+            'E-Commerce', 'Quick Commerce', 'Fashion & Lifestyle', 'Home Improvement',
+            'Furniture', 'Toys & Games', 'Books & Media', 'Sports Goods',
+            'Beauty & Wellness', 'Health Products', 'Pet Care', 'Baby Care',
             
-            # Consumer Sectors
-            'CONSUMER ELECTRONICS', 'APPLIANCES', 'FASHION', 'BEAUTY',
-            'WELLNESS', 'SPORTS', 'ENTERTAINMENT', 'GAMING',
+            # Healthcare & Pharmaceuticals
+            'Pharmaceuticals', 'Biotechnology', 'Medical Equipment', 'Hospital Services',
+            'Diagnostics', 'Contract Research', 'Nutraceuticals', 'Veterinary Products',
+            'Medical Devices', 'Digital Health', 'Telemedicine', 'Health Insurance',
+            'Clinical Research', 'Gene Therapy', 'Vaccines', 'Active Pharma Ingredients',
+            'Drug Discovery', 'Medical Technology', 'Healthcare IT', 'Surgical Equipment',
             
-            # Infrastructure
-            'ROADS', 'AIRPORTS', 'SMART CITIES', 'RENEWABLE ENERGY',
-            'SOLAR POWER', 'WIND ENERGY', 'HYDROELECTRIC',
+            # Infrastructure & Real Estate
+            'Construction - Real Estate', 'Construction - Infrastructure', 'Roads & Highways',
+            'Ports & Shipping', 'Airports', 'Railways', 'Urban Infrastructure', 'Water Treatment',
+            'Waste Management', 'Smart Cities', 'Green Buildings', 'Metro Rail',
+            'Bridges & Tunnels', 'Power Transmission', 'Gas Distribution', 'Irrigation',
+            'Housing Development', 'Commercial Real Estate', 'Industrial Parks', 'SEZ Development',
             
-            # Emerging Sectors
-            'ELECTRIC VEHICLES', 'BATTERY TECHNOLOGY', 'SPACE TECHNOLOGY',
-            'BIOTECHNOLOGY', 'GENOMICS', 'MEDICAL DEVICES', 'ROBOTICS',
-            'DRONES', 'IOT', 'CLOUD COMPUTING', 'DATA ANALYTICS',
+            # Energy & Power
+            'Power Generation - Thermal', 'Power Generation - Renewable', 'Solar Power',
+            'Wind Energy', 'Hydroelectric Power', 'Nuclear Power', 'Coal', 'Natural Gas',
+            'Oil Refining', 'Oil Marketing', 'Oil Drilling', 'Petrochemicals',
+            'Gas Utilities', 'Power Distribution', 'Energy Storage', 'Biofuels',
+            'Energy Trading', 'Power Equipment', 'Grid Solutions', 'Energy Efficiency',
             
-            # Traditional Industries
-            'COTTON', 'JUTE', 'SILK', 'WOOL', 'SPICES', 'TEA', 'COFFEE',
-            'RICE', 'WHEAT', 'PULSES', 'OILSEEDS', 'DAIRY', 'POULTRY',
-            'FISHERIES', 'FORESTRY', 'HANDLOOM', 'HANDICRAFTS'
+            # Automobile & Transportation
+            'Automobiles - Passenger Cars', 'Automobiles - Commercial Vehicles',
+            'Automobiles - Two Wheelers', 'Auto Components', 'Tyres', 'Auto Ancillaries',
+            'Electric Vehicles', 'Battery Technology', 'Logistics - Express', 'Logistics - Freight',
+            'Warehousing', 'Cold Chain', 'Last Mile Delivery', 'Supply Chain Management',
+            'Fleet Management', 'Vehicle Financing', 'Auto Retail', 'Used Car Trading',
+            
+            # Materials & Chemicals
+            'Steel - Integrated', 'Steel - Specialty', 'Aluminum', 'Copper', 'Zinc',
+            'Precious Metals', 'Industrial Metals', 'Chemicals - Specialty', 'Chemicals - Commodity',
+            'Paints & Coatings', 'Adhesives', 'Plastics', 'Rubber', 'Glass & Ceramics',
+            'Cement', 'Building Materials', 'Packaging Materials', 'Textiles', 'Leather',
+            
+            # Agriculture & Food Processing
+            'Agriculture', 'Seeds', 'Fertilizers', 'Pesticides', 'Farm Equipment',
+            'Food Processing', 'Dairy Products', 'Meat & Poultry', 'Fisheries',
+            'Sugar', 'Edible Oil', 'Tea', 'Coffee', 'Spices', 'Organic Food',
+            'Aquaculture', 'Horticulture', 'Animal Feed', 'Food Packaging',
+            'Cold Storage', 'Agricultural Trading', 'Plantation', 'Farm-to-Fork',
+            
+            # Media & Entertainment
+            'Broadcasting & Cable TV', 'Films & Entertainment', 'Music & Audio',
+            'Digital Media', 'Advertising Agencies', 'Public Relations', 'Event Management',
+            'Gaming & Esports', 'OTT Platforms', 'Social Media', 'Content Creation',
+            'Publishing', 'Animation', 'Visual Effects', 'Radio Broadcasting',
+            
+            # Emerging Technologies
+            'Space Technology', 'Drone Technology', 'Quantum Computing', '3D Printing',
+            'Nanotechnology', 'Green Technology', 'Clean Energy', 'Carbon Management',
+            'ESG Solutions', 'Sustainability Services', 'Circular Economy', 'Smart Manufacturing'
         ]
         
-        np.random.seed(42)  # For consistent demo data
-        sectors_list = []
+        # Create realistic sector performance based on market patterns
+        performance_data = {
+            'Cycles': 3.52, 'Automobiles-Trucks/LCV': 3.29, 'Advertising & Media': 3.10,
+            'Fintech': 3.06, 'Refineries': 2.59, 'Glass': 2.51, 'Amusement Parks/Recreation/Club': 2.22,
+            'Diversified': 2.04, 'Port': 1.99, 'Oil Exploration': 1.87, 'Finance - Housing': 1.78,
+            'Finance - Asset Management': 1.46, 'Fertilizers & Chemicals': 1.34, 'Paper': 1.28,
+            'Hotels/Restaurants': 1.15, 'Engineering': 1.02, 'Power - Transmission': 0.89,
+            'Textiles - Readymade Apparels': 0.76, 'Pharmaceuticals': 0.63
+        }
         
-        for sector in sectors:
-            base_price = np.random.uniform(15000, 25000)
-            change = np.random.uniform(-2, 3)
+        sectors_list = []
+        np.random.seed(hash(str(datetime.now().date())) % 1000)  # Daily consistent but changing data
+        
+        for i, sector in enumerate(sectors):
+            # Use real performance data or generate realistic values
+            if sector in performance_data:
+                change_percent = performance_data[sector] + np.random.uniform(-0.2, 0.2)
+            else:
+                # Generate based on sector characteristics
+                if any(tech in sector for tech in ['Software', 'IT', 'Tech', 'Digital', 'AI', 'Cyber', 'Cloud']):
+                    change_percent = np.random.uniform(0.8, 3.2)  # Tech sectors performing well
+                elif any(fin in sector for fin in ['Banking', 'Finance', 'Insurance', 'NBFC', 'Capital']):
+                    change_percent = np.random.uniform(-0.8, 2.3)  # Financial sector mixed
+                elif any(ener in sector for ener in ['Power', 'Energy', 'Oil', 'Gas', 'Coal', 'Solar']):
+                    change_percent = np.random.uniform(-1.5, 1.8)  # Energy sector volatility
+                elif any(cons in sector for cons in ['Consumer', 'FMCG', 'Retail', 'Food', 'Apparel']):
+                    change_percent = np.random.uniform(-0.3, 2.1)  # Consumer staples stable
+                elif any(auto in sector for auto in ['Automobile', 'Vehicle', 'Transport', 'Logistics']):
+                    change_percent = np.random.uniform(-1.2, 2.8)  # Auto sector recovery
+                else:
+                    change_percent = np.random.uniform(-1.8, 2.5)  # General sectors
+            
+            # Generate realistic price levels
+            base_price = np.random.uniform(1200, 3800)
+            open_price = base_price * np.random.uniform(0.995, 1.005)
+            close_price = open_price * (1 + change_percent/100)
+            high_price = max(open_price, close_price) * np.random.uniform(1.002, 1.018)
+            low_price = min(open_price, close_price) * np.random.uniform(0.982, 0.998)
+            volume = np.random.randint(500000, 25000000)
             
             sectors_list.append({
                 'Industry': sector,
-                'Avg_Open': base_price * 0.995,
-                'Avg_Close': base_price,
-                'Avg_High': base_price * 1.015,
-                'Avg_Low': base_price * 0.985,
-                'Change': change,
-                'Percent_Change': change,
-                'Volume': np.random.randint(1000000, 50000000)
+                'Avg_Open': round(open_price, 2),
+                'Avg_Close': round(close_price, 2),
+                'Avg_High': round(high_price, 2),
+                'Avg_Low': round(low_price, 2),
+                'Change': round(close_price - open_price, 2),
+                'Percent_Change': round(change_percent, 2),
+                'Volume': volume
             })
         
         df = pd.DataFrame(sectors_list)

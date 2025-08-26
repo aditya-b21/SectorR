@@ -112,20 +112,66 @@ def render_sector_rotation():
     else:
         filtered_df = sector_df
     
+    # Top Performance Changes Section (like in your image)
+    st.markdown('<div class="sector-card">', unsafe_allow_html=True)
+    st.subheader("📈 Top Performance Changes")
+    
+    # Get top performing sectors
+    top_performers = filtered_df.nlargest(10, 'Percent_Change')
+    
+    if not top_performers.empty:
+        col1, col2 = st.columns([1, 1])
+        
+        with col1:
+            st.markdown("### 🚀 Top Gainers")
+            for _, sector in top_performers.head(5).iterrows():
+                st.markdown(f"**{sector['Industry']}** - {sector['Percent_Change']:.2f}%", 
+                          help=f"Open: ₹{sector['Avg_Open']:.2f} | Close: ₹{sector['Avg_Close']:.2f}")
+        
+        with col2:
+            # Create top performance bar chart
+            fig_top = px.bar(
+                top_performers.head(8),
+                x='Percent_Change',
+                y='Industry',
+                orientation='h',
+                color='Percent_Change',
+                color_continuous_scale=['#4ECDC4', '#45B7D1', '#96CEB4', '#FECA57'],
+                title="<b>🏆 Top 8 Sector Performance</b>",
+                text='Percent_Change'
+            )
+            fig_top.update_traces(
+                texttemplate='%{text:.2f}%',
+                textposition='outside',
+                hovertemplate='<b>%{y}</b><br>Performance: %{x:.2f}%<extra></extra>'
+            )
+            fig_top.update_layout(
+                height=400,
+                showlegend=False,
+                plot_bgcolor='rgba(0,0,0,0)',
+                paper_bgcolor='rgba(0,0,0,0)',
+                font=dict(size=10),
+                title_font_size=16,
+                margin=dict(l=20, r=20, t=40, b=20)
+            )
+            st.plotly_chart(fig_top, use_container_width=True)
+    st.markdown('</div>', unsafe_allow_html=True)
+    
     # Enhanced Industry Performance Overview Chart
     st.markdown('<div class="sector-card">', unsafe_allow_html=True)
-    st.subheader("📊 Industry Performance Overview")
+    st.subheader("📊 Complete Industry Performance Overview")
     
     if not filtered_df.empty:
         # Create enhanced interactive bar chart with animations
+        display_count = min(25, len(filtered_df))  # Show up to 25 sectors
         fig_bar = px.bar(
-            filtered_df.head(20),  # Show top 20 sectors
+            filtered_df.head(display_count),
             x='Percent_Change',
             y='Industry',
             orientation='h',
             color='Percent_Change',
-            color_continuous_scale=['#FF6B6B', '#FFE66D', '#4ECDC4', '#45B7D1', '#96CEB4'],
-            title="<b>Sector Performance Dashboard</b>",
+            color_continuous_scale=['#FF4757', '#FFA502', '#2ED573', '#1E90FF', '#5F27CD'],
+            title=f"<b>📊 Sector Performance Dashboard ({display_count} Sectors)</b>",
             labels={'Percent_Change': 'Percentage Change (%)', 'Industry': 'Sector'},
             text='Percent_Change'
         )
