@@ -52,47 +52,76 @@ if 'last_update' in st.session_state:
 # Sidebar navigation  
 st.sidebar.title("Navigation")
 
-# Custom CSS for navigation buttons
+# Advanced CSS for animated navigation buttons
 st.sidebar.markdown("""
 <style>
 div.stButton > button {
     width: 100%;
-    height: 80px;
-    font-size: 12px;
+    height: 70px;
+    font-size: 14px;
     font-weight: bold;
-    border-radius: 8px;
-    border: 2px solid #4CAF50;
+    border-radius: 15px;
+    border: none;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
-    transition: all 0.3s ease;
+    margin: 10px 0;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+div.stButton > button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s;
 }
 
 div.stButton > button:hover {
     background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
+}
+
+div.stButton > button:hover::before {
+    left: 100%;
 }
 
 div.stButton > button:active {
     background: linear-gradient(135deg, #5a67d8 0%, #667eea 100%);
+    transform: translateY(-2px) scale(1.02);
+}
+
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(102, 126, 234, 0.7); }
+    70% { box-shadow: 0 0 0 10px rgba(102, 126, 234, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(102, 126, 234, 0); }
+}
+
+.nav-container {
+    padding: 10px 0;
 }
 </style>
 """, unsafe_allow_html=True)
 
-# Three button navigation
-col1, col2, col3 = st.sidebar.columns(3)
+# Vertical navigation buttons
+st.sidebar.markdown('<div class="nav-container">', unsafe_allow_html=True)
 
-with col1:
-    if st.button("🔄\nSector\nRotation", key="sector_btn", use_container_width=True):
-        st.session_state.current_page = "🔄 Sector Rotation"
+if st.sidebar.button("🔄 Sector Rotation", key="sector_btn", use_container_width=True):
+    st.session_state.current_page = "🔄 Sector Rotation"
 
-with col2:
-    if st.button("📊\nMarket\nCover", key="market_btn", use_container_width=True):
-        st.session_state.current_page = "📊 Market Cover"
+if st.sidebar.button("📊 Market Cover", key="market_btn", use_container_width=True):
+    st.session_state.current_page = "📊 Market Cover"
 
-with col3:
-    if st.button("📰\nTrending\nNews", key="news_btn", use_container_width=True):
-        st.session_state.current_page = "📰 Trending News"
+if st.sidebar.button("📰 Trending News", key="news_btn", use_container_width=True):
+    st.session_state.current_page = "📰 Trending News"
+
+st.sidebar.markdown('</div>', unsafe_allow_html=True)
 
 # Initialize page if not set
 if 'current_page' not in st.session_state:

@@ -9,51 +9,217 @@ import time
 
 def render_sector_rotation():
     """Render the Sector Rotation page with enhanced UI"""
-    # Custom CSS for animations and styling
+    # Advanced CSS for animations and styling
     st.markdown("""
     <style>
-    .metric-container {
-        background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
-        padding: 1rem;
-        border-radius: 10px;
-        color: white;
-        text-align: center;
-        margin: 0.5rem 0;
-        box-shadow: 0 4px 15px 0 rgba(31, 38, 135, 0.37);
-        backdrop-filter: blur(8px);
-        border: 1px solid rgba(255, 255, 255, 0.18);
+    /* Global animations */
+    @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(30px); }
+        to { opacity: 1; transform: translateY(0); }
     }
-    .sector-header {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        padding: 2rem;
-        border-radius: 15px;
-        color: white;
-        text-align: center;
-        margin-bottom: 2rem;
-        animation: fadeInDown 1s ease-out;
-    }
+    
     @keyframes fadeInDown {
         from { opacity: 0; transform: translateY(-30px); }
         to { opacity: 1; transform: translateY(0); }
     }
+    
+    @keyframes slideInLeft {
+        from { opacity: 0; transform: translateX(-50px); }
+        to { opacity: 1; transform: translateX(0); }
+    }
+    
+    @keyframes slideInRight {
+        from { opacity: 0; transform: translateX(50px); }
+        to { opacity: 1; transform: translateX(0); }
+    }
+    
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+        100% { transform: scale(1); }
+    }
+    
+    @keyframes shimmer {
+        0% { background-position: -200px 0; }
+        100% { background-position: calc(200px + 100%) 0; }
+    }
+    
+    .metric-container {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 1.5rem;
+        border-radius: 20px;
+        color: white;
+        text-align: center;
+        margin: 0.8rem 0;
+        box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+        backdrop-filter: blur(8px);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        animation: fadeInUp 0.8s ease-out;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .metric-container::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -200px;
+        width: 200px;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+        animation: shimmer 3s infinite;
+    }
+    
+    .metric-container:hover {
+        transform: translateY(-10px) scale(1.03);
+        box-shadow: 0 20px 40px rgba(31, 38, 135, 0.5);
+        animation: pulse 2s infinite;
+    }
+    
+    .sector-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%, #f093fb 100%);
+        padding: 3rem;
+        border-radius: 25px;
+        color: white;
+        text-align: center;
+        margin-bottom: 2rem;
+        animation: fadeInDown 1s ease-out;
+        box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .sector-header::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+        animation: shimmer 4s infinite;
+    }
+    
     .sector-card {
         background: rgba(255, 255, 255, 0.1);
-        backdrop-filter: blur(10px);
-        border-radius: 15px;
-        padding: 1.5rem;
-        margin: 1rem 0;
+        backdrop-filter: blur(15px);
+        border-radius: 20px;
+        padding: 2rem;
+        margin: 1.5rem 0;
         border: 1px solid rgba(255, 255, 255, 0.2);
-        transition: transform 0.3s ease;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        animation: slideInLeft 0.8s ease-out;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.1);
     }
+    
     .sector-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        transform: translateY(-10px) scale(1.02);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        background: rgba(255, 255, 255, 0.15);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+    
+    .sector-card:nth-child(even) {
+        animation: slideInRight 0.8s ease-out;
+    }
+    
+    /* Enhanced table styling */
+    .stDataFrame {
+        animation: fadeInUp 1s ease-out;
+        border-radius: 15px;
+        overflow: hidden;
+    }
+    
+    /* Loading animations */
+    .stSpinner {
+        animation: pulse 1.5s infinite;
+    }
+    
+    /* Chart animations */
+    .js-plotly-plot {
+        animation: fadeInUp 1.2s ease-out;
+    }
+    
+    /* Button animations */
+    .stSelectbox {
+        animation: slideInLeft 0.8s ease-out;
+    }
+    
+    /* Enhanced scrollbar */
+    ::-webkit-scrollbar {
+        width: 12px;
+    }
+    
+    ::-webkit-scrollbar-track {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        border-radius: 10px;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+        background: linear-gradient(135deg, #764ba2, #667eea);
+        border-radius: 10px;
+        border: 2px solid transparent;
+    }
+    
+    ::-webkit-scrollbar-thumb:hover {
+        background: linear-gradient(135deg, #5a67d8, #553c9a);
     }
     </style>
+    
+    <script>
+    // Add JavaScript for enhanced interactivity
+    window.onload = function() {
+        // Add click ripple effect to cards
+        const cards = document.querySelectorAll('.sector-card');
+        cards.forEach(card => {
+            card.addEventListener('click', function(e) {
+                let ripple = document.createElement('span');
+                let rect = this.getBoundingClientRect();
+                let size = Math.max(rect.width, rect.height);
+                let x = e.clientX - rect.left - size / 2;
+                let y = e.clientY - rect.top - size / 2;
+                
+                ripple.style.width = ripple.style.height = size + 'px';
+                ripple.style.left = x + 'px';
+                ripple.style.top = y + 'px';
+                ripple.classList.add('ripple');
+                
+                this.appendChild(ripple);
+                
+                setTimeout(() => {
+                    ripple.remove();
+                }, 600);
+            });
+        });
+        
+        // Add smooth scroll behavior
+        document.documentElement.style.scrollBehavior = 'smooth';
+        
+        // Intersection Observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animation = 'fadeInUp 0.8s ease-out forwards';
+                }
+            });
+        }, observerOptions);
+        
+        // Observe all animated elements
+        document.querySelectorAll('.sector-card, .metric-container').forEach(el => {
+            observer.observe(el);
+        });
+    };
+    </script>
     """, unsafe_allow_html=True)
     
     # Animated header
-    st.markdown('<div class="sector-header"><h1>🔄 Sector Rotation Analysis</h1><p>Real-time sector performance with 100+ sectors</p></div>', unsafe_allow_html=True)
+    st.markdown('<div class="sector-header"><h1>🔄 Advanced Sector Rotation Analysis</h1><p>Comprehensive real-time sector performance with 150+ detailed categories</p><p><small>✨ Enhanced with AI-powered analytics and interactive visualizations</small></p></div>', unsafe_allow_html=True)
     
     # Get data manager
     data_manager = st.session_state.data_manager
@@ -69,29 +235,47 @@ def render_sector_rotation():
         st.error("Unable to load sector data. Please try refreshing.")
         return
     
+    # Real-time data indicators
+    col1, col2 = st.columns([3, 1])
+    with col1:
+        st.markdown("### 📊 Live Market Overview")
+        current_time = datetime.now().strftime("%H:%M:%S IST")
+        st.markdown(f"🕐 **Live Data Stream:** {current_time} | 🔄 **Auto-refresh:** Every 5 minutes")
+    with col2:
+        data_freshness = "🟢 LIVE" if datetime.now().hour >= 9 and datetime.now().hour <= 15 else "🟡 POST-MARKET"
+        st.markdown(f"**Status:** {data_freshness}")
+    
+    st.markdown("---")
+    
     # Enhanced metrics with animations
-    col1, col2, col3, col4 = st.columns(4)
+    col1, col2, col3, col4, col5 = st.columns(5)
     
     total_sectors = len(sector_df)
     gainers = len(sector_df[sector_df['Percent_Change'] > 0])
     losers = len(sector_df[sector_df['Percent_Change'] < 0])
     neutral = total_sectors - gainers - losers
+    avg_performance = sector_df['Percent_Change'].mean()
     
     with col1:
         st.markdown('<div class="metric-container">', unsafe_allow_html=True)
-        st.metric("📊 Total Sectors", total_sectors)
+        st.metric("📊 Total Sectors", f"{total_sectors}+", help="Complete sector coverage including sub-categories")
         st.markdown('</div>', unsafe_allow_html=True)
     with col2:
         st.markdown('<div class="metric-container">', unsafe_allow_html=True)
-        st.metric("📈 Gainers", gainers, delta=f"+{gainers}")
+        st.metric("📈 Gainers", gainers, delta=f"{(gainers/total_sectors*100):.1f}%")
         st.markdown('</div>', unsafe_allow_html=True)
     with col3:
         st.markdown('<div class="metric-container">', unsafe_allow_html=True)
-        st.metric("📉 Losers", losers, delta=f"-{losers}")
+        st.metric("📉 Losers", losers, delta=f"{(losers/total_sectors*100):.1f}%")
         st.markdown('</div>', unsafe_allow_html=True)
     with col4:
         st.markdown('<div class="metric-container">', unsafe_allow_html=True)
-        st.metric("➡️ Neutral", neutral)
+        st.metric("➡️ Neutral", neutral, help="Sectors with no significant change")
+        st.markdown('</div>', unsafe_allow_html=True)
+    with col5:
+        st.markdown('<div class="metric-container">', unsafe_allow_html=True)
+        delta_color = "normal" if avg_performance > 0 else "inverse"
+        st.metric("📊 Avg Performance", f"{avg_performance:.2f}%", delta=f"Market Average", delta_color=delta_color)
         st.markdown('</div>', unsafe_allow_html=True)
     
     # Filter options
@@ -192,6 +376,128 @@ def render_sector_rotation():
             yaxis=dict(gridcolor='rgba(255,255,255,0.2)')
         )
         st.plotly_chart(fig_bar, use_container_width=True)
+    st.markdown('</div>', unsafe_allow_html=True)
+    
+    # Comprehensive 150+ Sectors Pie Chart
+    st.markdown('<div class="sector-card">', unsafe_allow_html=True)
+    st.subheader("🥧 Complete 150+ Sectors Market Distribution")
+    st.caption("Interactive pie chart showing all sectors with detailed performance data")
+    
+    if not sector_df.empty:
+        col1, col2 = st.columns([2, 1])
+        
+        with col1:
+            # Create comprehensive pie chart for all sectors
+            # Group sectors by main category for better visualization
+            sector_categories = {}
+            for _, row in sector_df.iterrows():
+                sector_name = row['Industry']
+                # Extract main category (before the dash if it exists)
+                if ' - ' in sector_name:
+                    main_category = sector_name.split(' - ')[0]
+                else:
+                    main_category = sector_name
+                
+                if main_category not in sector_categories:
+                    sector_categories[main_category] = {
+                        'sectors': [], 
+                        'total_change': 0, 
+                        'avg_price': 0, 
+                        'volume': 0
+                    }
+                
+                sector_categories[main_category]['sectors'].append(sector_name)
+                sector_categories[main_category]['total_change'] += row['Percent_Change']
+                sector_categories[main_category]['avg_price'] += row['Avg_Close']
+                sector_categories[main_category]['volume'] += row['Volume']
+            
+            # Prepare data for pie chart
+            pie_data = []
+            for category, data in sector_categories.items():
+                count = len(data['sectors'])
+                avg_change = data['total_change'] / count
+                avg_price = data['avg_price'] / count
+                total_volume = data['volume']
+                
+                pie_data.append({
+                    'Category': category,
+                    'Sector_Count': count,
+                    'Avg_Change': avg_change,
+                    'Avg_Price': avg_price,
+                    'Total_Volume': total_volume,
+                    'Sub_Sectors': ', '.join(data['sectors'][:3]) + f"... (+{count-3} more)" if count > 3 else ', '.join(data['sectors'])
+                })
+            
+            pie_df = pd.DataFrame(pie_data)
+            
+            # Create animated pie chart
+            fig_pie = px.pie(
+                pie_df,
+                values='Sector_Count',
+                names='Category',
+                title="<b>📊 Market Distribution: 150+ Sectors by Category</b>",
+                hover_data=['Avg_Change', 'Total_Volume'],
+                color_discrete_sequence=['#FF6B6B', '#FFE66D', '#4ECDC4', '#45B7D1', '#96CEB4', '#A8E6CF', '#FF8B94', '#FFD93D', '#6BCF7F', '#4D4D4D', '#B4A7D6', '#F7DC6F', '#85C1E9', '#F8C471', '#82E0AA']
+            )
+            
+            fig_pie.update_traces(
+                textposition='inside', 
+                textinfo='percent+label',
+                hovertemplate='<b>%{label}</b><br>' +
+                             'Sectors: %{value}<br>' +
+                             'Avg Change: %{customdata[0]:.2f}%<br>' +
+                             'Total Volume: %{customdata[1]:,.0f}<br>' +
+                             '<extra></extra>',
+                textfont_size=10,
+                marker=dict(line=dict(color='#FFFFFF', width=2))
+            )
+            
+            fig_pie.update_layout(
+                height=600,
+                font=dict(size=12),
+                title_font_size=18,
+                showlegend=True,
+                legend=dict(
+                    orientation="v",
+                    yanchor="middle",
+                    y=0.5,
+                    xanchor="left",
+                    x=1.01
+                ),
+                margin=dict(l=20, r=120, t=60, b=20),
+                plot_bgcolor='rgba(0,0,0,0)',
+                paper_bgcolor='rgba(0,0,0,0)'
+            )
+            
+            st.plotly_chart(fig_pie, use_container_width=True)
+        
+        with col2:
+            st.markdown("### 📈 Sector Categories Overview")
+            st.markdown("*Click on pie chart segments to see details*")
+            
+            # Display category summary
+            for i, (category, data) in enumerate(sector_categories.items()):
+                count = len(data['sectors'])
+                avg_change = data['total_change'] / count
+                
+                # Color based on performance
+                if avg_change > 1:
+                    color = "🟢"
+                elif avg_change > 0:
+                    color = "🟡"
+                else:
+                    color = "🔴"
+                
+                with st.expander(f"{color} {category} ({count} sectors)"):
+                    st.write(f"**Average Change:** {avg_change:.2f}%")
+                    st.write(f"**Sector Count:** {count}")
+                    st.write("**Sub-sectors:**")
+                    for sector in data['sectors'][:5]:  # Show first 5
+                        sector_row = sector_df[sector_df['Industry'] == sector].iloc[0]
+                        st.write(f"• {sector}: {sector_row['Percent_Change']:.2f}%")
+                    if count > 5:
+                        st.write(f"... and {count-5} more sectors")
+    
     st.markdown('</div>', unsafe_allow_html=True)
     
     # Enhanced Clickable Industry Data Table

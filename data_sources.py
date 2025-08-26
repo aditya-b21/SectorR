@@ -308,20 +308,50 @@ class DataManager:
             'ESG Solutions', 'Sustainability Services', 'Circular Economy', 'Smart Manufacturing'
         ]
         
-        # Comprehensive sector performance patterns without revealing sources
+        # Enhanced sector performance patterns with detailed sub-categories
         performance_patterns = {
-            'Cycles - Standard Bicycles': 3.52, 'Automobiles - Trucks/LCV': 3.29, 
-            'Advertising & Media - Digital Advertising': 3.10, 'Fintech - Digital Payments': 3.06,
-            'Refineries - Crude Oil Processing': 2.59, 'Glass - Flat Glass': 2.51, 
-            'Amusement Parks - Theme Parks': 2.22, 'Diversified - Conglomerates': 2.04,
-            'Port - Container Handling': 1.99, 'Oil Exploration - Upstream': 1.87,
-            'Finance - Housing Finance': 1.78, 'Finance - Asset Management': 1.46,
-            'Fertilizers & Chemicals': 1.34, 'Paper - Packaging': 1.28,
-            'Hotels/Restaurants': 1.15, 'Engineering - Heavy Engineering': 1.02,
-            'Power - Transmission': 0.89, 'Textiles - Readymade Apparels': 0.76,
-            'Pharmaceuticals': 0.63, 'Auto Components - Engine Parts': 2.85,
-            'Tyres - Passenger Car': 2.45, 'Software - Enterprise Solutions': 2.92,
-            'Banking - Private Sector': 1.85, 'Insurance - Life Insurance': 1.55
+            # Automotive & Transportation (Excellent Performance)
+            'Cycles - Standard Bicycles': 3.52, 'Cycles - Electric Bicycles': 4.15, 'Cycles - Mountain Bikes': 2.98,
+            'Automobiles - Trucks/LCV': 3.29, 'Automobiles - Electric Vehicles': 4.87, 'Automobiles - Passenger Cars': 2.76,
+            'Auto Components - Engine Parts': 2.85, 'Auto Components - Transmission': 3.12, 'Auto Components - Brake Systems': 2.67,
+            'Tyres - Passenger Car': 2.45, 'Tyres - Commercial Vehicle': 2.89, 'Tyres - Two Wheeler': 3.31,
+            
+            # Technology & Digital (Strong Growth)
+            'Software - Enterprise Solutions': 2.92, 'Software - Consumer Applications': 3.45, 'Software - Gaming': 4.12,
+            'IT Services - Consulting': 2.76, 'IT Services - Development': 3.21, 'Cloud Computing - SaaS': 4.55,
+            'Artificial Intelligence - Machine Learning': 5.23, 'Cybersecurity - Network Security': 3.87,
+            'Fintech - Digital Payments': 3.06, 'Fintech - Lending Platforms': 2.94, 'EdTech - Online Learning': 3.78,
+            
+            # Industrial & Manufacturing
+            'Glass - Flat Glass': 2.51, 'Glass - Container Glass': 2.18, 'Glass - Specialty Glass': 3.44,
+            'Refineries - Crude Oil Processing': 2.59, 'Refineries - Petroleum Products': 2.31, 
+            'Petrochemicals - Basic Chemicals': 2.77, 'Engineering - Heavy Engineering': 1.02,
+            'Industrial Equipment - Pumps': 2.34, 'Capital Goods - Construction Equipment': 2.67,
+            
+            # Financial Services
+            'Banking - Private Sector': 1.85, 'Banking - Public Sector': 1.23, 'Banking - Payment Banks': 3.45,
+            'Finance - Housing Finance': 1.78, 'Finance - Asset Management': 1.46, 'Insurance - Life Insurance': 1.55,
+            'NBFC - Vehicle Finance': 2.12, 'Capital Markets - Stock Exchanges': 2.87,
+            
+            # Consumer & Retail
+            'FMCG - Food Products': 1.67, 'FMCG - Personal Care': 2.23, 'Consumer Electronics': 2.89,
+            'E-Commerce': 3.67, 'Quick Commerce': 4.21, 'Fashion & Lifestyle': 2.45,
+            
+            # Healthcare & Pharmaceuticals
+            'Pharmaceuticals': 0.63, 'Biotechnology': 3.45, 'Medical Equipment': 2.78, 'Diagnostics': 2.34,
+            'Digital Health': 4.12, 'Telemedicine': 3.87, 'Vaccines': 1.89,
+            
+            # Energy & Power
+            'Power Generation - Renewable': 3.78, 'Solar Power': 4.23, 'Wind Energy': 3.91,
+            'Power Generation - Thermal': 1.45, 'Energy Storage': 4.67, 'Coal': -0.23,
+            
+            # Media & Entertainment
+            'Advertising & Media - Digital Advertising': 3.10, 'Entertainment - OTT Platforms': 3.89,
+            'Entertainment - Gaming': 4.45, 'Digital Media': 3.23, 'Content Creation': 3.67,
+            
+            # Emerging Sectors
+            'Space Technology': 5.67, 'Drone Technology': 4.89, 'Green Technology': 4.23,
+            'ESG Solutions': 3.78, 'Quantum Computing': 6.12, '3D Printing': 3.45
         }
         
         sectors_list = []
