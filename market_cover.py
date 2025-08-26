@@ -261,10 +261,10 @@ def render_market_cover():
         correlation_matrix = (correlation_matrix + correlation_matrix.T) / 2
         
         correlation_df = pd.DataFrame(
-            correlation_matrix,
-            index=available_indices,
-            columns=available_indices
+            correlation_matrix
         )
+        correlation_df.index = available_indices
+        correlation_df.columns = available_indices
         
         fig_corr = px.imshow(
             correlation_df,

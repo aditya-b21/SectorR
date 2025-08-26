@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 from datetime import datetime, timedelta
 import requests
+import plotly.express as px
 
 def render_trending_news():
     """Render the Trending News page"""
@@ -63,11 +64,10 @@ def render_trending_news():
     
     if category_counts:
         category_df = pd.DataFrame(
-            list(category_counts.items()),
+            data=list(category_counts.items()),
             columns=['Category', 'Count']
         ).sort_values('Count', ascending=False)
         
-        import plotly.express as px
         fig_categories = px.bar(
             category_df,
             x='Category',
@@ -188,7 +188,7 @@ def render_trending_news():
         
         if keyword_counts:
             keyword_df = pd.DataFrame(
-                list(keyword_counts.items()),
+                data=list(keyword_counts.items()),
                 columns=['Keyword', 'Mentions']
             ).sort_values('Mentions', ascending=False).head(10)
             
@@ -221,7 +221,7 @@ def render_trending_news():
         
         if news_by_date:
             timeline_df = pd.DataFrame(
-                list(news_by_date.items()),
+                data=list(news_by_date.items()),
                 columns=['Date', 'Articles']
             ).sort_values('Date')
             
@@ -247,7 +247,7 @@ def render_trending_news():
     
     if source_counts:
         source_df = pd.DataFrame(
-            list(source_counts.items()),
+            data=list(source_counts.items()),
             columns=['Source', 'Articles']
         ).sort_values('Articles', ascending=False).head(10)
         
