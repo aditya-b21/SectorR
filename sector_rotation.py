@@ -6,6 +6,7 @@ import numpy as np
 from datetime import datetime
 from streamlit_option_menu import option_menu
 import time
+from tradingview_charts import render_tradingview_widget, render_stock_modal_button, render_sector_chart
 
 def render_sector_rotation():
     """Render the Sector Rotation page with enhanced UI"""
@@ -583,9 +584,29 @@ def render_sector_rotation():
             key="sector_selector"
         )
         
-        # Display stocks in selected sector
+        # Display stocks in selected sector with TradingView integration
         if selected_sector:
             st.markdown(f'### 🔍 Stocks in {selected_sector}')
+            
+            # Show sector chart first
+            st.markdown("#### 📈 Sector Performance Chart")
+            
+            # Get sector symbol for TradingView
+            sector_symbol_map = {
+                'NIFTY IT': 'CNXIT',
+                'NIFTY BANK': 'BANKNIFTY',
+                'NIFTY PHARMA': 'CNXPHARMA',
+                'NIFTY AUTO': 'CNXAUTO',
+                'NIFTY FMCG': 'CNXFMCG',
+                'NIFTY METAL': 'CNXMETAL',
+                'Reliance Industries': 'RELIANCE',
+                'Tata Consultancy Services': 'TCS',
+                'HDFC Bank': 'HDFCBANK',
+                'Infosys': 'INFY'
+            }
+            
+            sector_symbol = sector_symbol_map.get(selected_sector, 'NIFTY')
+            render_sector_chart(selected_sector, sector_symbol)
             
             # Fetch sector stocks
             sector_stocks = data_manager.get_sector_stocks(selected_sector)
@@ -596,7 +617,34 @@ def render_sector_rotation():
                 sector_stocks['Change'] = sector_stocks['Change'].round(2)
                 sector_stocks['Percent_Change'] = sector_stocks['Percent_Change'].round(2)
                 
-                # Display stocks table
+                st.markdown("#### 📊 Individual Stocks with Live Charts")
+                
+                # Display stocks as interactive buttons with charts
+                cols = st.columns(3)
+                for i, (_, stock) in enumerate(sector_stocks.head(12).iterrows()):
+                    with cols[i % 3]:
+                        st.markdown(f"""
+                        <div style="
+                            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+                            padding: 15px;
+                            border-radius: 12px;
+                            margin: 8px 0;
+                            border-left: 4px solid {'#2ecc71' if stock['Percent_Change'] > 0 else '#e74c3c'};
+                        ">
+                            <h4 style="margin: 0; color: #2c3e50;">{stock['Symbol']}</h4>
+                            <p style="margin: 5px 0; font-size: 18px; font-weight: bold; color: #34495e;">₹{stock['Current_Price']:.2f}</p>
+                            <p style="margin: 0; color: {'#2ecc71' if stock['Percent_Change'] > 0 else '#e74c3c'};">
+                                {stock['Percent_Change']:+.2f}% ({stock['Change']:+.2f})
+                            </p>
+                        </div>
+                        """, unsafe_allow_html=True)
+                        
+                        # Add TradingView modal button
+                        stock_symbol = f"{stock['Symbol']}.NS"
+                        render_stock_modal_button(stock_symbol, stock['Symbol'])
+                
+                # Traditional table view
+                st.markdown("#### 📋 Detailed Stock Data")
                 st.dataframe(
                     sector_stocks,
                     column_config={

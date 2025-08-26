@@ -19,4 +19,6 @@ dependencies = [
     "yfinance>=0.2.65",
     "streamlit-lottie>=0.0.5",
     "requests-html>=0.10.0",
+    "nsepy>=0.8",
+    "requests-cache>=1.2.1",
 ]

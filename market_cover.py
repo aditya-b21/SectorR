@@ -4,6 +4,7 @@ import plotly.graph_objects as go
 import pandas as pd
 import numpy as np
 from datetime import datetime, timedelta
+from tradingview_charts import render_tradingview_widget, render_indices_overview
 
 def render_market_cover():
     """Render the Market Cover page with enhanced UI"""
@@ -89,110 +90,74 @@ def render_market_cover():
                     st.markdown('<div class="metric-enhanced">', unsafe_allow_html=True)
                     st.metric(
                         label=f"{trend_icon} {index_data['Index']}",
-                        value=f"₹{index_data['Price']:,.2f}",
+                        value=f"₹{index_data['Last_Price']:,.2f}",
                         delta=f"{index_data['Change']:+.2f} ({index_data['Percent_Change']:+.2f}%)"
                     )
                     st.markdown('</div>', unsafe_allow_html=True)
                     
-                    # Additional details in expander
-                    with st.expander(f"Details for {index_data['Index']}"):
+                    # Additional details in expander with TradingView chart
+                    with st.expander(f"📈 Live Chart & Details - {index_data['Index']}"):
                         st.write(f"**Open:** ₹{index_data['Open']:,.2f}")
                         st.write(f"**High:** ₹{index_data['High']:,.2f}")
                         st.write(f"**Low:** ₹{index_data['Low']:,.2f}")
                         st.write(f"**Volume:** {index_data['Volume']:,.0f}")
                         st.write(f"**Trend:** {trend_icon}")
+                        
+                        # Show TradingView chart
+                        if 'Symbol' in index_data:
+                            chart_symbol = index_data['Symbol'].replace('^', '')
+                            render_tradingview_widget(chart_symbol, height=350)
     
-    # Interactive Charts Section
-    st.subheader("📊 Interactive Index Charts")
+    # TradingView Live Charts Section
+    st.subheader("📊 Live TradingView Charts - Real-Time Data")
     
-    # Index selection for detailed chart
+    # Major Indices TradingView Charts
+    st.markdown("#### 🚀 Major Indices - Live Professional Charts")
+    render_indices_overview()
+    
+    # Individual Index Selection with Real TradingView Chart
+    st.markdown("#### 🎯 Detailed Index Analysis")
     selected_index = st.selectbox(
-        "Select index for detailed analysis:",
+        "Select index for detailed live analysis:",
         index_df['Index'].tolist(),
         key="selected_index_chart"
     )
     
-    # Time period selection
-    time_period = st.selectbox(
-        "Select time period:",
-        ["1W", "1M", "6M", "1Y"],
-        index=1,
-        key="time_period"
-    )
-    
-    # Generate sample historical data for the selected index
     if selected_index:
         selected_row = index_df[index_df['Index'] == selected_index].iloc[0]
         
-        # Calculate number of days based on period
-        days_map = {"1W": 7, "1M": 30, "6M": 180, "1Y": 365}
-        num_days = days_map[time_period]
+        # Show current metrics
+        col1, col2, col3, col4 = st.columns(4)
+        with col1:
+            st.metric("Current Price", f"₹{selected_row['Last_Price']:,.2f}")
+        with col2:
+            st.metric("Change", f"{selected_row['Change']:+.2f}")
+        with col3:
+            st.metric("% Change", f"{selected_row['Percent_Change']:+.2f}%")
+        with col4:
+            st.metric("Volume", f"{selected_row['Volume']:,.0f}")
         
-        # Generate sample historical data
-        end_date = datetime.now()
-        start_date = end_date - timedelta(days=num_days)
-        dates = pd.date_range(start=start_date, end=end_date, freq='D')
+        # Show live TradingView chart
+        st.markdown(f"### 📈 {selected_index} - Live Professional Chart")
+        if 'Symbol' in selected_row:
+            chart_symbol = selected_row['Symbol'].replace('^', '')
+            render_tradingview_widget(chart_symbol, height=600)
         
-        # Simulate price movement starting from current price
-        np.random.seed(42)  # For consistent demo data
-        price_changes = np.random.randn(len(dates)) * 0.02  # 2% daily volatility
-        current_price = selected_row['Price']
-        
-        # Create realistic price series
-        prices = [current_price]
-        for change in price_changes[1:]:
-            new_price = prices[-1] * (1 + change)
-            prices.append(new_price)
-        
-        historical_data = pd.DataFrame({
-            'Date': dates,
-            'Price': prices,
-            'Volume': np.random.randint(1000000, 10000000, len(dates))
-        })
-        
-        # Create candlestick-style data
-        historical_data['Open'] = historical_data['Price'].shift(1).fillna(historical_data['Price'])
-        historical_data['High'] = historical_data[['Price', 'Open']].max(axis=1) * (1 + np.random.uniform(0, 0.02, len(dates)))
-        historical_data['Low'] = historical_data[['Price', 'Open']].min(axis=1) * (1 - np.random.uniform(0, 0.02, len(dates)))
-        historical_data['Close'] = historical_data['Price']
-        
-        # Create enhanced candlestick chart
-        fig = go.Figure()
-        
-        fig.add_trace(go.Candlestick(
-            x=historical_data['Date'],
-            open=historical_data['Open'],
-            high=historical_data['High'],
-            low=historical_data['Low'],
-            close=historical_data['Close'],
-            name=selected_index,
-            increasing_line_color='#26C281',
-            decreasing_line_color='#ED4A7B'
-        ))
-        
-        fig.update_layout(
-            title=f"<b>📈 {selected_index} - {time_period} Performance Analysis</b>",
-            xaxis_title="📅 Date",
-            yaxis_title="💵 Price (₹)",
-            height=600,
-            xaxis_rangeslider_visible=False,
-            plot_bgcolor='rgba(0,0,0,0)',
-            paper_bgcolor='rgba(0,0,0,0)',
-            font=dict(size=12),
-            title_font_size=18
-        )
-        
-        st.plotly_chart(fig, use_container_width=True)
-        
-        # Volume chart
-        fig_volume = px.bar(
-            historical_data,
-            x='Date',
-            y='Volume',
-            title=f"{selected_index} - Trading Volume ({time_period})"
-        )
-        fig_volume.update_layout(height=300)
-        st.plotly_chart(fig_volume, use_container_width=True)
+        # Additional analysis section
+        with st.expander("📊 Technical Analysis Summary"):
+            st.markdown(f"""
+            **{selected_index} Analysis:**
+            - **Current Trend:** {'Bullish' if selected_row['Percent_Change'] > 0 else 'Bearish' if selected_row['Percent_Change'] < 0 else 'Neutral'}
+            - **Day Range:** ₹{selected_row['Low']:,.2f} - ₹{selected_row['High']:,.2f}
+            - **Opening Price:** ₹{selected_row['Open']:,.2f}
+            - **Price Movement:** {abs(selected_row['Percent_Change']):.2f}% {'upward' if selected_row['Percent_Change'] > 0 else 'downward' if selected_row['Percent_Change'] < 0 else 'sideways'}
+            - **Trading Volume:** {selected_row['Volume']:,.0f} shares
+            """)
+            
+            # Risk indicator
+            risk_level = "High" if abs(selected_row['Percent_Change']) > 2 else "Medium" if abs(selected_row['Percent_Change']) > 1 else "Low"
+            risk_color = "🔴" if risk_level == "High" else "🟡" if risk_level == "Medium" else "🟢"
+            st.markdown(f"**Volatility Risk:** {risk_color} {risk_level}")
     
     st.markdown('</div>', unsafe_allow_html=True)
     
