@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-from datetime import datetime
+from datetime import datetime, timedelta
 import pytz
 import time
 from apscheduler.schedulers.background import BackgroundScheduler
@@ -186,7 +186,7 @@ page = st.session_state.current_page
 # Auto-refresh indicator
 next_refresh = datetime.now(pytz.timezone('Asia/Kolkata')).replace(hour=16, minute=0, second=0, microsecond=0)
 if next_refresh <= datetime.now(pytz.timezone('Asia/Kolkata')):
-    next_refresh = next_refresh.replace(day=next_refresh.day + 1)
+   next_refresh = next_refresh + timedelta(days=1)
 
 st.sidebar.info(f"⏰ Next auto-refresh: {next_refresh.strftime('%I:%M %p IST')}")
 
